@@ -10,9 +10,10 @@
 
 (defn dispatch! [op op-data] )
 
-(defonce store-ref (atom {}))
+(def data-view-ref (atom nil))
 
-(def data-view-ref (atom @store-ref))
+(defonce store-ref
+  (atom {:groups {0 {:title "demo", :tasks {0 {:done? false, :title "demo"}}}}}))
 
 (defn render-data-view! []
   (reset! data-view-ref (render-collection! (piece-container @store-ref))))
@@ -21,7 +22,7 @@
 
 (defn render-app! []
   (let [target (.querySelector js/document "#app")]
-    (render! (comp-container @store-ref) target dispatch! states-ref)))
+    (render! (comp-container @data-view-ref) target dispatch! states-ref)))
 
 (def ssr-stages
   (let [ssr-element (.querySelector js/document "#ssr-stages")
@@ -34,7 +35,7 @@
     (let [target (.querySelector js/document "#app")]
       (falsify-stage!
        target
-       (render-element (comp-container @store-ref ssr-stages) states-ref)
+       (render-element (comp-container @data-view-ref ssr-stages) states-ref)
        dispatch!)))
   (render-app!)
   (add-watch store-ref :gc (fn [] (gc-states! states-ref)))
