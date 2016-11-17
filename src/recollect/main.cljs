@@ -4,11 +4,18 @@
              :refer
              [render! clear-cache! falsify-stage! render-element gc-states!]]
             [recollect.comp.container :refer [comp-container]]
-            [cljs.reader :refer [read-string]]))
+            [cljs.reader :refer [read-string]]
+            [recollect.core :refer [render-collection!]]
+            [recollect.piece.container :refer [piece-container]]))
 
 (defn dispatch! [op op-data] )
 
 (defonce store-ref (atom {}))
+
+(def data-view-ref (atom @store-ref))
+
+(defn render-data-view! []
+  (reset! data-view-ref (render-collection! (piece-container @store-ref))))
 
 (defonce states-ref (atom {}))
 
@@ -31,7 +38,8 @@
        dispatch!)))
   (render-app!)
   (add-watch store-ref :gc (fn [] (gc-states! states-ref)))
-  (add-watch store-ref :changes render-app!)
+  (add-watch store-ref :changes render-data-view!)
+  (add-watch data-view-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
   (println "app started!"))
 
