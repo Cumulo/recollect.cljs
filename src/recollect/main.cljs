@@ -5,7 +5,7 @@
              [render! clear-cache! falsify-stage! render-element gc-states!]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [recollect.core :refer [render-collection!]]
+            [recollect.core :refer [render-view]]
             [recollect.piece.container :refer [piece-container]]))
 
 (defn dispatch! [op op-data] )
@@ -16,7 +16,7 @@
   (atom {:groups {0 {:title "demo", :tasks {0 {:done? false, :title "demo"}}}}}))
 
 (defn render-data-view! []
-  (reset! data-view-ref (render-collection! (piece-container @store-ref))))
+  (reset! data-view-ref (render-view (piece-container @store-ref) @data-view-ref)))
 
 (defonce states-ref (atom {}))
 
@@ -42,6 +42,7 @@
   (add-watch store-ref :changes render-data-view!)
   (add-watch data-view-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
+  (render-data-view!)
   (println "app started!"))
 
 (defn on-jsload! [] (clear-cache!) (render-app!) (println "code update."))

@@ -5,7 +5,7 @@
 
 (defn record->name [record-name] (string/replace (pr-str record-name) "/" "."))
 
-(defrecord Piece [args data render])
+(defrecord Piece [name args data render])
 
 (defn piece? [x] (= (type x) Piece))
 
