@@ -25,7 +25,7 @@
   (->> data-tree (map-indexed (fn [idx x] (render-view x (get cached idx)))) (into [])))
 
 (defn render-view [data-tree cached-data-tree]
-  (println "Calling render-view:" data-tree cached-data-tree)
+  (comment println "Calling render-view:" data-tree cached-data-tree)
   (if (= (type data-tree) (type cached-data-tree))
     (cond
       (branch? data-tree)

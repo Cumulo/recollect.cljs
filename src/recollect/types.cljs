@@ -9,9 +9,10 @@
 (defn branch? [x] (= (type x) Branch))
 
 (defn conceal-branch [data]
+  (comment println "conceal" data)
   (cond
     (literal? data) data
-    (branch? data) (:data (conceal-branch data))
+    (branch? data) (conceal-branch (:data data))
     (map? data)
       (->> data (map (fn [entry] (let [[k v] entry] [k (conceal-branch v)]))) (into {}))
     (vector? data) (mapv conceal-branch data)
