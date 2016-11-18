@@ -1,6 +1,6 @@
 
 (ns recollect.core
-  (:require [recollect.types :refer [Piece piece?]] [recollect.util :refer [=seq]]))
+  (:require [recollect.types :refer [Piece piece?]] [recollect.util :refer [=seq literal?]]))
 
 (declare render-map)
 
@@ -33,8 +33,7 @@
                  (=seq (:args data-tree) (:args cached-data-tree)))
           cached-data-tree
           (assoc data-tree :data (render-view (:data data-tree) (:data cached-data-tree))))
-      (or (nil? data-tree) (number? data-tree) (string? data-tree) (keyword? data-tree))
-        data-tree
+      (literal? data-tree) data-tree
       (map? data-tree) (render-map data-tree cached-data-tree)
       (vector? data-tree) (render-vector data-tree cached-data-tree)
       (seq? data-tree) (render-seq data-tree cached-data-tree)
@@ -42,8 +41,7 @@
       :else (do (println "Unexpected data:" data-tree) nil))
     (cond
       (piece? data-tree) (assoc data-tree :data (render-view (:data data-tree) nil))
-      (or (nil? data-tree) (number? data-tree) (string? data-tree) (keyword? data-tree))
-        data-tree
+      (literal? data-tree) data-tree
       (map? data-tree) (render-map data-tree nil)
       (vector? data-tree) (render-vector data-tree nil)
       (seq? data-tree) (render-seq data-tree nil)
