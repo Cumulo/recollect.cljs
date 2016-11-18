@@ -1,6 +1,6 @@
 
 (ns recollect.diff
-  (:require [recollect.util :refer [literal? =seq]] [recollect.types :refer [piece?]]))
+  (:require [recollect.util :refer [literal? =seq]] [recollect.types :refer [branch?]]))
 
 (declare diff-view)
 
@@ -76,7 +76,7 @@
 (defn diff-view [coord a b]
   (if (= (type a) (type b))
     (cond
-      (piece? a) (if (identical? a b) no-changes (diff-view coord (:data a) (:data b)))
+      (branch? a) (if (identical? a b) no-changes (diff-view coord (:data a) (:data b)))
       (literal? b) (if (identical? a b) no-changes [[coord :replace b]])
       (map? b) (diff-map coord a b)
       (set? b) (diff-set coord a b)

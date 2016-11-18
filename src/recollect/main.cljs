@@ -6,7 +6,7 @@
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [recollect.core :refer [render-view]]
-            [recollect.piece.container :refer [piece-container]]))
+            [recollect.branch.container :refer [branch-container]]))
 
 (defn dispatch! [op op-data] )
 
@@ -16,7 +16,7 @@
   (atom {:groups {0 {:title "demo", :tasks {0 {:done? false, :title "demo"}}}}}))
 
 (defn render-data-view! []
-  (reset! data-view-ref (render-view (piece-container @store-ref) @data-view-ref)))
+  (reset! data-view-ref (render-view (branch-container @store-ref) @data-view-ref)))
 
 (defonce states-ref (atom {}))
 

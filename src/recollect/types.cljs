@@ -4,21 +4,21 @@
             [clojure.string :as string]
             [recollect.util :refer [literal?]]))
 
-(defrecord Piece [name args data render])
+(defrecord Branch [name args data render])
 
-(defn piece? [x] (= (type x) Piece))
+(defn branch? [x] (= (type x) Branch))
 
-(defn conceal-piece [data]
+(defn conceal-branch [data]
   (cond
     (literal? data) data
-    (piece? data) (:data (conceal-piece data))
+    (branch? data) (:data (conceal-branch data))
     (map? data)
-      (->> data (map (fn [entry] (let [[k v] entry] [k (conceal-piece v)]))) (into {}))
-    (vector? data) (mapv conceal-piece data)
-    (seq? data) (map conceal-piece data)
-    (set? data) (->> data (map conceal-piece) (into #{}))
-    :else (do (println "Unkown data to conceal-piece:" data) data)))
+      (->> data (map (fn [entry] (let [[k v] entry] [k (conceal-branch v)]))) (into {}))
+    (vector? data) (mapv conceal-branch data)
+    (seq? data) (map conceal-branch data)
+    (set? data) (->> data (map conceal-branch) (into #{}))
+    :else (do (println "Unkown data to conceal-branch:" data) data)))
 
 (defn record->name [record-name] (string/replace (pr-str record-name) "/" "."))
 
-(register-tag-parser! (record->name Piece) map->Piece)
+(register-tag-parser! (record->name Branch) map->Branch)
