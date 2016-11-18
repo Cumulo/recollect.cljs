@@ -1,4 +1,6 @@
 
-(ns recollect.piece.container )
+(ns recollect.piece.container (:require [recollect.core :refer [create-piece]]))
 
-(defn piece-container [store] (assoc store :demo "nothing"))
+(defn render [store] (assoc store :demo "nothing"))
+
+(def piece-container (create-piece :container render))

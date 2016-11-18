@@ -13,7 +13,7 @@
 (declare render-seq)
 
 (defn create-piece [piece-name renderer]
-  (fn [piece-name & args] (Piece. piece-name args (apply renderer args) renderer)))
+  (fn [& args] (Piece. piece-name args (apply renderer args) renderer)))
 
 (defn render-seq [data-tree cached]
   (let [size (count data-tree), cached-list (into [] cached), length (count cached-list)]
@@ -28,7 +28,7 @@
   (->> data-tree (map-indexed (fn [idx x] (render-view x (get cached idx)))) (into [])))
 
 (defn render-view [data-tree cached-data-tree]
-  (println "Calling render-view:" data-tree)
+  (println "Calling render-view:" data-tree cached-data-tree)
   (if (= (type data-tree) (type cached-data-tree))
     (cond
       (piece? data-tree)
