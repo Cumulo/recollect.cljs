@@ -1,6 +1,6 @@
 
 (ns recollect.diff
-  (:require [recollect.util :refer [literal?]] [recollect.types :refer [piece?]]))
+  (:require [recollect.util :refer [literal? =seq]] [recollect.types :refer [piece?]]))
 
 (declare diff-view)
 
@@ -12,9 +12,24 @@
 
 (declare find-map-changes)
 
-(defn diff-set [coord a b] [coord :replace b])
+(defn find-set-changes [acc coord a b]
+  (cond
+    (and (empty? a) (empty? b)) acc
+    (empty? a) (recur (conj acc [coord :add (first b)]) coord (list) (rest b))
+    (empty? b) (recur (conj acc [coord :rm (first a)]) coord (rest a) (list))
+    (= -1 (compare (first a) (first b)))
+      (recur (conj acc [coord :rm (first a)]) coord (rest a) (list))
+    (= 1 (compare (first a) (first b)))
+      (recur (conj acc [coord :add (first b)]) coord (list) (rest b))
+    :else (recur acc coord (rest a) (rest b))))
+
+(defn diff-set [coord a b]
+  (let [sorted-a (into (sorted-set) a), sorted-b (into (sorted-set) b)]
+    (find-set-changes [] coord sorted-a sorted-b)))
 
 (def no-changes [])
+
+(defn diff-seq [coord a b] (if (=seq a b) no-changes [coord :replace b]))
 
 (defn find-map-changes [acc coord a-pairs b-pairs]
   (let [[ka va] (first a-pairs), [kb vb] (first b-pairs)]
@@ -66,6 +81,6 @@
       (map? b) (diff-map coord a b)
       (set? b) (diff-set coord a b)
       (vector? b) (diff-vector coord a b)
-      (seq? b) nil
+      (seq? b) (diff-seq coord a b)
       :else (do (println "Unexpected data" a b) []))
     [[coord :replace b]]))

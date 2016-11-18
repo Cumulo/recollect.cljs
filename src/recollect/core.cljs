@@ -15,7 +15,11 @@
 (defn create-piece [piece-name renderer]
   (fn [piece-name & args] (Piece. piece-name args (apply renderer args) renderer)))
 
-(defn render-seq [data-tree cached] (->> data-tree (map (fn [x] (render-view x nil)))))
+(defn render-seq [data-tree cached]
+  (let [size (count data-tree), cached-list (into [] cached), length (count cached-list)]
+    (->> data-tree
+         (map-indexed
+          (fn [idx x] (render-view x (get cached-list (- length (- size idx)))))))))
 
 (defn render-set [data-tree cached]
   (->> data-tree (map (fn [x] (render-view x nil))) (into #{})))
