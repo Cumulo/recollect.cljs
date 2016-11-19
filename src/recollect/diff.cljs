@@ -21,8 +21,8 @@
     (into
      []
      (concat
-      (if (empty? added) no-changes [[coord :st/++ added]])
-      (if (empty? removed) no-changes [[coord :st/-- removed]])))))
+      (if (empty? added) no-changes [[coord :st/++ (conceal-branch added)]])
+      (if (empty? removed) no-changes [[coord :st/-- (conceal-branch removed)]])))))
 
 (defn diff-seq [coord a b] (if (=seq a b) no-changes [[coord :m/! (conceal-branch b)]]))
 
@@ -34,8 +34,7 @@
         (let [next-acc (conj acc [(conj coord kb) :m/! (conceal-branch vb)])]
           (recur next-acc coord [] (rest b-pairs)))
       (empty? b-pairs)
-        (let [next-acc (conj acc [(conj coord ka) :m/- nil])]
-          (recur next-acc coord [] (rest a-pairs)))
+        (let [next-acc (conj acc [coord :m/- ka])] (recur next-acc coord [] (rest a-pairs)))
       (= -1 (compare ka kb))
         (recur (conj acc [(conj coord ka) :m/- nil]) coord (rest a-pairs) b-pairs)
       (= 1 (compare ka kb))
@@ -54,11 +53,11 @@
 (defn diff-vector [coord a b] (find-vector-changes [] 0 coord a b))
 
 (defn find-vector-changes [acc idx coord a-pairs b-pairs]
-  (println idx a-pairs b-pairs)
+  (comment println idx a-pairs b-pairs)
   (cond
     (and (empty? a-pairs) (empty? b-pairs)) acc
     (empty? b-pairs) (conj acc [coord :v/-! idx])
-    (empty? a-pairs) (conj acc [coord :v/+! [idx (conceal-branch b-pairs)]])
+    (empty? a-pairs) (conj acc [coord :v/+! (conceal-branch b-pairs)])
     :else
       (recur
        (into [] (concat acc (diff-view (conj coord idx) (first a-pairs) (first b-pairs))))

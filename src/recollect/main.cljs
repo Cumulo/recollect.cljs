@@ -34,7 +34,7 @@
   (let [data-view (render-view (branch-container @store-ref) @data-view-ref)
         changes (diff-view [] @data-view-ref data-view)
         new-client (patch-view @client-store-ref changes)]
-    (println "Data view:" (conceal-branch data-view))
+    (comment println "Data view:" (conceal-branch data-view))
     (println "Changes:" changes)
     (comment println "After patching:" new-client)
     (reset! data-view-ref data-view)
