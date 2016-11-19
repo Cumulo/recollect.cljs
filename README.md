@@ -2,7 +2,39 @@
 Recollect
 ----
 
-Experimental renderer for Respo with caches.
+Syncing library for Cumulo with caches in Respo DOM diffing algorithms.
+
+### Usage
+
+```clojure
+(recollect.core/create-branch branch-name renderer)
+(recollect.core/render-view branch-data old-data-view)
+(recollect.core/conceal data-view)
+(recollect.diff/diff-view a b)
+(recollect.diff/patch-view a changes)
+```
+
+Terms:
+
+* Branch: like component, but for data
+* View: like DOM, but for the whole tree
+
+### Diff Operations
+
+```clojure
+[:m/!   coord x]      # reset data
+[:m/-   coord k]      # remove key from map
+[:v/+!  coord xs]     # append to vector
+[:v/-!  coord k]      # remove after index k
+[:st/++ coord xs]     # add to set
+[:st/-- coord xs]     # remove from set
+[:sq/-+ coord [k xs]] # drop k items and add sequence
+```
+
+For vectors, data is supposed to be manipulated from the tail.
+Items in the new vector are mapped to its old ones by index.
+
+For sequences, it's always considered changed totally.
 
 ### Related
 

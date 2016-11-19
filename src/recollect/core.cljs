@@ -54,7 +54,5 @@
        (map (fn [entry] (let [[k v] entry] [k (render-view v (get cached k))])))
        (into {})))
 
-(def cached-data-view-ref (atom nil))
-
 (defn create-branch [branch-name renderer]
   (fn [& args] (Branch. branch-name args (apply renderer args) renderer)))

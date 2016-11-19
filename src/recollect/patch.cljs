@@ -15,6 +15,13 @@
 (defn patch-vector-drop [base coord data]
   (update-in base coord (fn [cursor] (subvec cursor 0 data))))
 
+(defn patch-seq [base coord data]
+  (let [[n content] data]
+    (update-in
+     base
+     coord
+     (fn [cursor] (concat content (if (zero? n) cursor (drop n cursor)))))))
+
 (defn patch-set-remove [base coord data]
   (update-in base coord (fn [cursor] (difference cursor data))))
 
@@ -27,6 +34,7 @@
       :m/! (patch-map-set base coord data)
       :st/++ (patch-set-add base coord data)
       :st/-- (patch-set-remove base coord data)
+      :sq/-+ (patch-seq base coord data)
       (do (println "Unkown op:" op) base))))
 
 (defn patch-view [base changes]

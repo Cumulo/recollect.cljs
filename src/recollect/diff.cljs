@@ -24,7 +24,17 @@
       (if (empty? added) no-changes [[coord :st/++ (conceal-branch added)]])
       (if (empty? removed) no-changes [[coord :st/-- (conceal-branch removed)]])))))
 
-(defn diff-seq [coord a b] (if (=seq a b) no-changes [[coord :m/! (conceal-branch b)]]))
+(defn find-seq-changes [coord ra rb]
+  (cond
+    (and (empty? ra) (empty? rb)) []
+    (empty? ra) [[coord :sq/-+ [0 (conceal-branch (reverse rb))]]]
+    (empty? rb) [[coord :sq/-+ [(count ra) []]]]
+    :else
+      (if (identical? (first ra) (first rb))
+        (recur coord (rest ra) (rest rb))
+        [[coord :sq/-+ [(count ra) (conceal-branch (reverse rb))]]])))
+
+(defn diff-seq [coord a b] (find-seq-changes coord (reverse a) (reverse b)))
 
 (defn find-map-changes [acc coord a-pairs b-pairs]
   (let [[ka va] (first a-pairs), [kb vb] (first b-pairs)]
