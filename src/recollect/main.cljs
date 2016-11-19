@@ -9,24 +9,36 @@
             [recollect.types :refer [conceal-branch]]
             [recollect.branch.container :refer [branch-container]]
             [recollect.diff :refer [diff-view]]
-            [recollect.patch :refer [patch-view]]))
+            [recollect.patch :refer [patch-view]]
+            [recollect.updater :refer [updater]]))
 
 (defonce client-store-ref (atom nil))
 
-(defn dispatch! [op op-data] )
+(defonce store-ref
+  (atom
+   {:seq-0 (list {:a 1}),
+    :vec-0 [{:a 1}],
+    :map-0 {:x 0},
+    :date {:month 10, :year 2016},
+    :set-0 #{{:a 1}},
+    :in-map {:vec-1 [{:a 1}], :lit-1 1},
+    :lit-0 1,
+    :user {:name "Chen"}}))
+
+(defn dispatch! [op op-data]
+  (let [new-store (updater @store-ref op op-data)] (reset! store-ref new-store)))
 
 (defonce data-view-ref (atom nil))
-
-(defonce store-ref
-  (atom {:groups {0 {:title "demo", :tasks {0 {:done? false, :title "demo"}}}}}))
 
 (defn render-data-view! []
   (let [data-view (render-view (branch-container @store-ref) @data-view-ref)
         changes (diff-view [] @data-view-ref data-view)
         new-client (patch-view @client-store-ref changes)]
-    (println "Changes:" changes new-client)
+    (println "Data view:" (conceal-branch data-view))
+    (println "Changes:" changes)
+    (comment println "After patching:" new-client)
     (reset! data-view-ref data-view)
-    (reset! client-store-ref (conceal-branch data-view))))
+    (reset! client-store-ref new-client)))
 
 (defonce states-ref (atom {}))
 

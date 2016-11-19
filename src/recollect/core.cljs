@@ -32,7 +32,7 @@
         (if (and (identical? (:name data-tree) (:name cached-data-tree))
                  (identical? (:render data-tree) (:render cached-data-tree))
                  (=seq (:args data-tree) (:args cached-data-tree)))
-          cached-data-tree
+          (do cached-data-tree)
           (assoc data-tree :data (render-view (:data data-tree) (:data cached-data-tree))))
       (literal? data-tree) data-tree
       (map? data-tree) (render-map data-tree cached-data-tree)
