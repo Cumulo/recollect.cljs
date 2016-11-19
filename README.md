@@ -7,17 +7,17 @@ Syncing library for Cumulo with caches in Respo DOM diffing algorithms.
 ### Usage
 
 ```clojure
-(recollect.core/create-branch branch-name renderer)
-(recollect.core/render-view branch-data old-data-view)
-(recollect.core/conceal data-view)
-(recollect.diff/diff-view a b)
-(recollect.diff/patch-view a changes)
+(recollect.bunch/create-twig twig-name renderer)
+(recollect.bunch/render-bunch twig-data old-data-bunch)
+(recollect.bunch/conceal data-bunch)
+(recollect.diff/diff-bunch a b)
+(recollect.diff/patch-bunch a changes)
 ```
 
 Terms:
 
-* Branch: like component, but for data
-* View: like DOM, but for the whole tree
+* Twig: data wrapped with a renderer to caching purpose
+* Bunch: the whole date tree rendered with Twigs
 
 ### Diff Operations
 

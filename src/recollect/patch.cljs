@@ -37,5 +37,5 @@
       :sq/-+ (patch-seq base coord data)
       (do (println "Unkown op:" op) base))))
 
-(defn patch-view [base changes]
+(defn patch-bunch [base changes]
   (if (empty? changes) base (recur (patch-one base (first changes)) (rest changes))))

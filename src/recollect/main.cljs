@@ -5,11 +5,11 @@
              [render! clear-cache! falsify-stage! render-element gc-states!]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [recollect.core :refer [render-view]]
-            [recollect.types :refer [conceal-branch]]
-            [recollect.branch.container :refer [branch-container]]
-            [recollect.diff :refer [diff-view]]
-            [recollect.patch :refer [patch-view]]
+            [recollect.bunch :refer [render-bunch]]
+            [recollect.types :refer [conceal-twig]]
+            [recollect.twig.container :refer [twig-container]]
+            [recollect.diff :refer [diff-bunch]]
+            [recollect.patch :refer [patch-bunch]]
             [recollect.updater :refer [updater]]))
 
 (defonce client-store-ref (atom nil))
@@ -28,23 +28,23 @@
 (defn dispatch! [op op-data]
   (let [new-store (updater @store-ref op op-data)] (reset! store-ref new-store)))
 
-(defonce data-view-ref (atom nil))
+(defonce data-bunch-ref (atom nil))
 
-(defn render-data-view! []
-  (let [data-view (render-view (branch-container @store-ref) @data-view-ref)
-        changes (diff-view [] @data-view-ref data-view)
-        new-client (patch-view @client-store-ref changes)]
-    (comment println "Data view:" (conceal-branch data-view))
+(defn render-data-bunch! []
+  (let [data-bunch (render-bunch (twig-container @store-ref) @data-bunch-ref)
+        changes (diff-bunch [] @data-bunch-ref data-bunch)
+        new-client (patch-bunch @client-store-ref changes)]
+    (comment println "Data bunch:" (conceal-twig data-bunch))
     (println "Changes:" changes)
     (comment println "After patching:" new-client)
-    (reset! data-view-ref data-view)
+    (reset! data-bunch-ref data-bunch)
     (reset! client-store-ref new-client)))
 
 (defonce states-ref (atom {}))
 
 (defn render-app! []
   (let [target (.querySelector js/document "#app")]
-    (render! (comp-container @data-view-ref @client-store-ref) target dispatch! states-ref)))
+    (render! (comp-container @data-bunch-ref @client-store-ref) target dispatch! states-ref)))
 
 (def ssr-stages
   (let [ssr-element (.querySelector js/document "#ssr-stages")
@@ -57,16 +57,16 @@
     (let [target (.querySelector js/document "#app")]
       (falsify-stage!
        target
-       (render-element (comp-container @data-view-ref @client-store-ref) states-ref)
+       (render-element (comp-container @data-bunch-ref @client-store-ref) states-ref)
        dispatch!)))
   (render-app!)
   (add-watch store-ref :gc (fn [] (gc-states! states-ref)))
-  (add-watch store-ref :changes render-data-view!)
+  (add-watch store-ref :changes render-data-bunch!)
   (add-watch client-store-ref :changes render-app!)
   (add-watch states-ref :changes render-app!)
-  (render-data-view!)
+  (render-data-bunch!)
   (println "app started!"))
 
-(defn on-jsload! [] (clear-cache!) (render-data-view!) (println "code update."))
+(defn on-jsload! [] (clear-cache!) (render-data-bunch!) (println "code update."))
 
 (set! (.-onload js/window) -main!)

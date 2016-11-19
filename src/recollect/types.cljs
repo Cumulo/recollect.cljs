@@ -4,22 +4,22 @@
             [clojure.string :as string]
             [recollect.util :refer [literal?]]))
 
-(defrecord Branch [name args data render])
+(defrecord Twig [name args data render])
 
-(defn branch? [x] (= (type x) Branch))
+(defn twig? [x] (= (type x) Twig))
 
-(defn conceal-branch [data]
+(defn conceal-twig [data]
   (comment println "conceal" data)
   (cond
     (literal? data) data
-    (branch? data) (conceal-branch (:data data))
+    (twig? data) (conceal-twig (:data data))
     (map? data)
-      (->> data (map (fn [entry] (let [[k v] entry] [k (conceal-branch v)]))) (into {}))
-    (vector? data) (mapv conceal-branch data)
-    (seq? data) (map conceal-branch data)
-    (set? data) (->> data (map conceal-branch) (into #{}))
-    :else (do (println "Unkown data to conceal-branch:" data) data)))
+      (->> data (map (fn [entry] (let [[k v] entry] [k (conceal-twig v)]))) (into {}))
+    (vector? data) (mapv conceal-twig data)
+    (seq? data) (map conceal-twig data)
+    (set? data) (->> data (map conceal-twig) (into #{}))
+    :else (do (println "Unkown data to conceal-twig:" data) data)))
 
 (defn record->name [record-name] (string/replace (pr-str record-name) "/" "."))
 
-(register-tag-parser! (record->name Branch) map->Branch)
+(register-tag-parser! (record->name Twig) map->Twig)
