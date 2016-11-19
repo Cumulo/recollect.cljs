@@ -2,7 +2,7 @@
 Recollect
 ----
 
-Syncing library for Cumulo with caches in Respo DOM diffing algorithms.
+Cached rendering and diff/patch library designed for Cumulo project.
 
 ### Usage
 
@@ -19,6 +19,16 @@ Terms:
 * Twig: data wrapped with a renderer to caching purpose
 * Bunch: the whole date tree rendered with Twigs
 
+### Purpose
+
+Rendering data tree and doing diffing would be slow.
+It's a simlar to the problem of React DOM diffing.
+
+This library is using the algorithm developed in Respo DOM diffing.
+It's like data rendering, with keeps reusing last result of data tree.
+
+It's not tested yet, but is trying to trade memory and performance with caching.
+
 ### Diff Operations
 
 ```clojure
@@ -34,7 +44,8 @@ Terms:
 For vectors, data is supposed to be manipulated from the tail.
 Items in the new vector are mapped to its old ones by index.
 
-For sequences, it's always considered changed totally.
+For sequences, unchanged values since the tail is kept.
+Changed elements in the front will be replaced directly.
 
 ### Related
 
