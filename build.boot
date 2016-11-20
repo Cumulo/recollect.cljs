@@ -20,7 +20,7 @@
          '[adzerk.boot-test   :refer :all]
          '[clojure.java.io    :as    io])
 
-(def +version+ "0.1.0")
+(def +version+ "0.1.1")
 
 (task-options!
   pom {:project     'cumulo/recollect
