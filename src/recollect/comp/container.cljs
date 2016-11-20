@@ -12,9 +12,9 @@
   (fn [state mutate!]
     (div
      {:style (merge ui/global)}
+     (comp-panel)
      (comment div {} (comp-text (pr-str data-bunch) nil))
      (div {} (comp-text (pr-str client-store) nil))
-     (comp-panel)
      (render-value client-store))))
 
 (def comp-container (create-comp :container render))

@@ -6,6 +6,12 @@ Cached rendering and diff/patch library designed for Cumulo project.
 
 ### Usage
 
+[![Clojars Project](https://img.shields.io/clojars/v/cumulo/recollect.svg)](https://clojars.org/cumulo/recollect)
+
+```clojure
+[cumulo/recollect "0.1.0"]
+```
+
 ```clojure
 (recollect.bunch/create-twig twig-name renderer)
 (recollect.bunch/render-bunch twig-data old-data-bunch)
@@ -32,13 +38,13 @@ It's not tested yet, but is trying to trade memory and performance with caching.
 ### Diff Operations
 
 ```clojure
-[:m/!   coord x]      # reset data
-[:m/-   coord k]      # remove key from map
-[:v/+!  coord xs]     # append to vector
-[:v/-!  coord k]      # remove after index k
-[:st/++ coord xs]     # add to set
-[:st/-- coord xs]     # remove from set
-[:sq/-+ coord [k xs]] # drop k items and add sequence
+[:m/!   coord x]      ; reset data
+[:m/-   coord k]      ; remove key from map
+[:v/+!  coord xs]     ; append to vector
+[:v/-!  coord k]      ; remove after index k
+[:st/++ coord xs]     ; add to set
+[:st/-- coord xs]     ; remove from set
+[:sq/-+ coord [k xs]] ; drop k items and add sequence
 ```
 
 For vectors, data is supposed to be manipulated from the tail.

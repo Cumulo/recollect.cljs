@@ -9,7 +9,7 @@
                   [adzerk/boot-test          "1.1.2"       :scope "test"]
                   [mvc-works/hsl             "0.1.2"       :scope "test"]
                   [respo/ui                  "0.1.4"       :scope "test"]
-                  [respo/value               "0.1.6"       :scope "test"]
+                  [respo/value               "0.1.7"       :scope "test"]
                   [respo                     "0.3.32"      :scope "test"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
@@ -25,7 +25,7 @@
 (task-options!
   pom {:project     'cumulo/recollect
        :version     +version+
-       :description "Workflow"
+       :description "Cached rendering and diff/patch library designed for Cumulo project."
        :url         "https://github.com/Cumulo/recollect"
        :scm         {:url "https://github.com/Cumulo/recollect"}
        :license     {"MIT" "http://opensource.org/licenses/mit-license.php"}})
