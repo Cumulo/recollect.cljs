@@ -14,15 +14,8 @@
 
 (declare diff-bunch)
 
-(def no-changes [])
-
 (defn diff-set [coord a b]
-  (let [added (difference b a), removed (difference a b)]
-    (into
-     []
-     (concat
-      (if (empty? added) no-changes [[coord :st/++ (conceal-twig added)]])
-      (if (empty? removed) no-changes [[coord :st/-- (conceal-twig removed)]])))))
+  (let [added (difference b a), removed (difference a b)] [[coord :st/-+ [removed added]]]))
 
 (defn find-seq-changes [coord ra rb]
   (cond
@@ -35,6 +28,8 @@
         [[coord :sq/-+ [(count ra) (conceal-twig (reverse rb))]]])))
 
 (defn diff-seq [coord a b] (find-seq-changes coord (reverse a) (reverse b)))
+
+(def no-changes [])
 
 (defn diff-bunch [coord a b]
   (if (= (type a) (type b))
@@ -57,8 +52,7 @@
           (recur next-acc coord [] (rest b-pairs)))
       (empty? b-pairs)
         (let [next-acc (conj acc [coord :m/- ka])] (recur next-acc coord [] (rest a-pairs)))
-      (= -1 (compare ka kb))
-        (recur (conj acc [(conj coord ka) :m/- nil]) coord (rest a-pairs) b-pairs)
+      (= -1 (compare ka kb)) (recur (conj acc [coord :m/- ka]) coord (rest a-pairs) b-pairs)
       (= 1 (compare ka kb))
         (recur
          (conj acc [(conj coord kb) :m/! (conceal-twig vb)])
