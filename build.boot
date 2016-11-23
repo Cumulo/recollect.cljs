@@ -4,11 +4,11 @@
   :dependencies '[[org.clojure/clojure       "1.8.0"       :scope "test"]
                   [org.clojure/clojurescript "1.9.293"     :scope "test"]
                   [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
-                  [adzerk/boot-reload        "0.4.12"      :scope "test"]
+                  [adzerk/boot-reload        "0.4.13"      :scope "test"]
                   [cirru/boot-stack-server   "0.1.23"      :scope "test"]
                   [adzerk/boot-test          "1.1.2"       :scope "test"]
                   [mvc-works/hsl             "0.1.2"       :scope "test"]
-                  [respo/ui                  "0.1.4"       :scope "test"]
+                  [respo/ui                  "0.1.6"       :scope "test"]
                   [respo/value               "0.1.7"       :scope "test"]
                   [respo                     "0.3.32"      :scope "test"]])
 
@@ -20,7 +20,7 @@
          '[adzerk.boot-test   :refer :all]
          '[clojure.java.io    :as    io])
 
-(def +version+ "0.1.1")
+(def +version+ "0.1.2")
 
 (task-options!
   pom {:project     'cumulo/recollect
@@ -62,8 +62,8 @@
 
 (deftask editor! []
   (comp
-    (repl)
-    (start-stack-editor!)
+    (wait)
+    (start-stack-editor! :port 7012)
     (target :dir #{"src/"})))
 
 (deftask dev! []

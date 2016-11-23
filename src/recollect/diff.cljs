@@ -51,7 +51,7 @@
         (let [next-acc (conj acc [(conj coord kb) :m/! (conceal-twig vb)])]
           (recur next-acc coord [] (rest b-pairs)))
       (empty? b-pairs)
-        (let [next-acc (conj acc [coord :m/- ka])] (recur next-acc coord [] (rest a-pairs)))
+        (let [next-acc (conj acc [coord :m/- ka])] (recur next-acc coord (rest a-pairs) []))
       (= -1 (compare ka kb)) (recur (conj acc [coord :m/- ka]) coord (rest a-pairs) b-pairs)
       (= 1 (compare ka kb))
         (recur
