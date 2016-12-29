@@ -5,12 +5,12 @@
                   [org.clojure/clojurescript "1.9.293"     :scope "test"]
                   [adzerk/boot-cljs          "1.7.228-1"   :scope "test"]
                   [adzerk/boot-reload        "0.4.13"      :scope "test"]
-                  [cirru/boot-stack-server   "0.1.23"      :scope "test"]
+                  [cirru/boot-stack-server   "0.1.24"      :scope "test"]
                   [adzerk/boot-test          "1.1.2"       :scope "test"]
                   [mvc-works/hsl             "0.1.2"       :scope "test"]
                   [respo/ui                  "0.1.6"       :scope "test"]
                   [respo/value               "0.1.7"       :scope "test"]
-                  [respo                     "0.3.32"      :scope "test"]])
+                  [respo                     "0.3.33"      :scope "test"]])
 
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[adzerk.boot-reload :refer [reload]]
