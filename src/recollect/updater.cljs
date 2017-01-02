@@ -14,4 +14,5 @@
     :set-0 (update store :set-0 (fn [set-0] (conj set-0 op-data)))
     :set-0-rm (update store :set-0 (fn [set-0] (into #{} (rest set-0))))
     :date (update-in store [:date :month] inc)
+    :types (update store :types (fn [types-map] (assoc types-map op-data true)))
     (do (println "Unhandled op:" op) store)))

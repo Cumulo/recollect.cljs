@@ -42,6 +42,7 @@
       (render-button "Change set-0" :set-0)
       (comp-space 8 0)
       (render-button "Change set-0 remove" :set-0-rm))
-     (div {:style style-line} (render-button "Change date" :date)))))
+     (div {:style style-line} (render-button "Change date" :date))
+     (div {:style style-line} (render-button "Change types" :types)))))
 
 (def comp-panel (create-comp :panel render))

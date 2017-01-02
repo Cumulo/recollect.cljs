@@ -1,6 +1,6 @@
 
 (ns recollect.diff
-  (:require [recollect.util :refer [literal? =seq]]
+  (:require [recollect.util :refer [literal? =seq compare-more]]
             [recollect.types :refer [twig? conceal-twig]]
             [clojure.set :refer [difference]]))
 
@@ -29,6 +29,8 @@
 
 (defn diff-seq [coord a b] (find-seq-changes coord (reverse a) (reverse b)))
 
+(defn by-key [x y] (compare-more (first x) (first y)))
+
 (def no-changes [])
 
 (defn diff-bunch [coord a b]
@@ -52,8 +54,9 @@
           (recur next-acc coord [] (rest b-pairs)))
       (empty? b-pairs)
         (let [next-acc (conj acc [coord :m/- ka])] (recur next-acc coord (rest a-pairs) []))
-      (= -1 (compare ka kb)) (recur (conj acc [coord :m/- ka]) coord (rest a-pairs) b-pairs)
-      (= 1 (compare ka kb))
+      (= -1 (compare-more ka kb))
+        (recur (conj acc [coord :m/- ka]) coord (rest a-pairs) b-pairs)
+      (= 1 (compare-more ka kb))
         (recur
          (conj acc [(conj coord kb) :m/! (conceal-twig vb)])
          coord
@@ -83,5 +86,5 @@
        (rest b-pairs))))
 
 (defn diff-map [coord a b]
-  (let [a-pairs (sort-by first a), b-pairs (sort-by first b)]
+  (let [a-pairs (sort by-key a), b-pairs (sort by-key b)]
     (find-map-changes [] coord a-pairs b-pairs)))

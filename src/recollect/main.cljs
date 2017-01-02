@@ -22,6 +22,7 @@
     :date {:month 10, :year 2016},
     :set-0 #{{:a 1}},
     :in-map {:vec-1 [{:a 1}], :lit-1 1},
+    :types {:name 1, "name" 2},
     :lit-0 1,
     :user {:name "Chen"}}))
 

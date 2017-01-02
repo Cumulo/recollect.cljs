@@ -8,5 +8,16 @@
       false
       (if (identical? (first xs) (first ys)) (recur (rest xs) (rest ys)) false))))
 
+(defn type->int [x]
+  (cond
+    (number? x) 0
+    (keyword? x) 1
+    (string? x) 2
+    throw (js/Error. "Use keyword, string, or string! Failed to read!")))
+
+(defn compare-more [x y]
+  (let [type-x (type->int x), type-y (type->int y)]
+    (if (= type-x type-y) (compare x y) (compare type-x type-y))))
+
 (defn literal? [x]
   (or (number? x) (string? x) (keyword? x) (nil? x) (symbol? x) (true? x) (false? x)))
