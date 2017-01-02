@@ -13,7 +13,7 @@
     (number? x) 0
     (keyword? x) 1
     (string? x) 2
-    throw (js/Error. "Use keyword, string, or string! Failed to read!")))
+    js/throw (js/Error. "Use keyword, string, or string! Failed to read!")))
 
 (defn compare-more [x y]
   (let [type-x (type->int x), type-y (type->int y)]
