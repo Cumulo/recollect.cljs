@@ -13,7 +13,7 @@
     (number? x) 0
     (keyword? x) 1
     (string? x) 2
-    js/throw (js/Error. "Use keyword, string, or string! Failed to read!")))
+    :else (throw (js/Error. (str "Failed to compare, it's: " (pr-str x))))))
 
 (defn compare-more [x y]
   (let [type-x (type->int x), type-y (type->int y)]
