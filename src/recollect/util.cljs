@@ -13,6 +13,7 @@
     (number? x) 0
     (keyword? x) 1
     (string? x) 2
+    (nil? x) 3
     :else (throw (js/Error. (str "Failed to compare, it's: " (pr-str x))))))
 
 (defn compare-more [x y]
