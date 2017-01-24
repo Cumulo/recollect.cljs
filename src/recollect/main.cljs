@@ -33,13 +33,15 @@
 
 (defn render-data-bunch! []
   (let [data-bunch (render-bunch (twig-container @store-ref) @data-bunch-ref)
-        changes (diff-bunch [] @data-bunch-ref data-bunch)
-        new-client (patch-bunch @client-store-ref changes)]
+        changes-ref (atom [])
+        collect! (fn [x] (swap! changes-ref conj x))]
+    (diff-bunch collect! [] @data-bunch-ref data-bunch)
     (comment println "Data bunch:" (conceal-twig data-bunch))
-    (println "Changes:" changes)
-    (comment println "After patching:" new-client)
+    (println "Changes:" @changes-ref)
     (reset! data-bunch-ref data-bunch)
-    (reset! client-store-ref new-client)))
+    (let [new-client (patch-bunch @client-store-ref @changes-ref)]
+      (comment println "After patching:" new-client)
+      (reset! client-store-ref new-client))))
 
 (defonce states-ref (atom {}))
 
