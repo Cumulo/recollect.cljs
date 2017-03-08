@@ -16,15 +16,15 @@
 
 (defonce store-ref
   (atom
-   {:seq-0 (list {:a 1}),
+   {:lit-0 1,
     :vec-0 [{:a 1}],
-    :map-0 {:x 0},
-    :date {:month 10, :year 2016},
+    :seq-0 (list {:a 1}),
     :set-0 #{{:a 1}},
-    :in-map {:vec-1 [{:a 1}], :lit-1 1},
-    :types {:name 1, "name" 2},
-    :lit-0 1,
-    :user {:name "Chen"}}))
+    :map-0 {:x 0},
+    :in-map {:lit-1 1, :vec-1 [{:a 1}]},
+    :date {:year 2016, :month 10},
+    :user {:name "Chen"},
+    :types {:name 1, "name" 2}}))
 
 (defn dispatch! [op op-data]
   (let [new-store (updater @store-ref op op-data)] (reset! store-ref new-store)))

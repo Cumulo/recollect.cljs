@@ -4,25 +4,13 @@
 
 (declare render-map)
 
-(declare render-bunch)
+(declare render-seq)
 
 (declare render-vector)
 
 (declare render-set)
 
-(declare render-seq)
-
-(defn render-seq [data-tree cached]
-  (let [size (count data-tree), cached-list (into [] cached), length (count cached-list)]
-    (->> data-tree
-         (map-indexed
-          (fn [idx x] (render-bunch x (get cached-list (- length (- size idx)))))))))
-
-(defn render-set [data-tree cached]
-  (->> data-tree (map (fn [x] (render-bunch x nil))) (into #{})))
-
-(defn render-vector [data-tree cached]
-  (->> data-tree (map-indexed (fn [idx x] (render-bunch x (get cached idx)))) (into [])))
+(declare render-bunch)
 
 (defn render-bunch [data-tree cached-data-tree]
   (comment println "Calling render-bunch:" data-tree cached-data-tree)
@@ -48,6 +36,18 @@
       (seq? data-tree) (render-seq data-tree nil)
       (set? data-tree) (render-set data-tree nil)
       :else (do (println "Unexpected data:" data-tree) nil))))
+
+(defn render-set [data-tree cached]
+  (->> data-tree (map (fn [x] (render-bunch x nil))) (into #{})))
+
+(defn render-vector [data-tree cached]
+  (->> data-tree (map-indexed (fn [idx x] (render-bunch x (get cached idx)))) (into [])))
+
+(defn render-seq [data-tree cached]
+  (let [size (count data-tree), cached-list (into [] cached), length (count cached-list)]
+    (->> data-tree
+         (map-indexed
+          (fn [idx x] (render-bunch x (get cached-list (- length (- size idx)))))))))
 
 (defn render-map [data-tree cached]
   (->> data-tree

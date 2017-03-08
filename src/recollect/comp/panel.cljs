@@ -6,12 +6,12 @@
             [respo.comp.space :refer [comp-space]]
             [respo.comp.text :refer [comp-text]]))
 
-(def style-line {:height "40px"})
-
 (defn on-click [op] (fn [e dispatch!] (dispatch! op (rand-int 100))))
 
 (defn render-button [title op]
-  (div {:style ui/button, :event {:click (on-click op)}, :attrs {:inner-text title}}))
+  (div {:style ui/button, :attrs {:inner-text title}, :event {:click (on-click op)}}))
+
+(def style-line {:height "40px"})
 
 (defn render []
   (fn [state mutate!]

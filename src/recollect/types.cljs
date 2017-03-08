@@ -8,6 +8,8 @@
 
 (defn twig? [x] (= (type x) Twig))
 
+(defn record->name [record-name] (string/replace (pr-str record-name) "/" "."))
+
 (defn conceal-twig [data]
   (comment println "conceal" data)
   (cond
@@ -19,7 +21,5 @@
     (seq? data) (map conceal-twig data)
     (set? data) (->> data (map conceal-twig) (into #{}))
     :else (do (println "Unkown data to conceal-twig:" data) data)))
-
-(defn record->name [record-name] (string/replace (pr-str record-name) "/" "."))
 
 (register-tag-parser! (record->name Twig) map->Twig)
