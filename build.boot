@@ -18,7 +18,7 @@
 (require '[adzerk.boot-cljs   :refer [cljs]]
          '[adzerk.boot-reload :refer [reload]])
 
-(def +version+ "0.1.6")
+(def +version+ "0.1.7")
 
 (task-options!
   pom {:project     'cumulo/recollect
