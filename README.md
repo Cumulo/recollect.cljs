@@ -16,7 +16,7 @@ Cached rendering and diff/patch library designed for Cumulo project.
 (recollect.bunch/create-twig twig-name renderer)
 (recollect.bunch/render-bunch twig-data old-data-bunch)
 (recollect.bunch/conceal data-bunch)
-(recollect.diff/diff-bunch a b)
+(recollect.diff/diff-bunch collect! a b)
 (recollect.diff/patch-bunch a changes)
 ```
 
