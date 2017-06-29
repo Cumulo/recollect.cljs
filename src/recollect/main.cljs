@@ -1,8 +1,7 @@
 
 (ns recollect.main
-  (:require [respo.core
-             :refer
-             [render! clear-cache! falsify-stage! render-element gc-states!]]
+  (:require [respo.core :refer [render! clear-cache! realize-ssr!]]
+            [respo.cursor :refer [mutate]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [recollect.bunch :refer [render-bunch]]
@@ -10,66 +9,60 @@
             [recollect.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-bunch]]
             [recollect.patch :refer [patch-bunch]]
-            [recollect.updater :refer [updater]]))
+            [recollect.updater :refer [updater]]
+            [recollect.schema :as schema]))
 
-(defonce client-store-ref (atom nil))
+(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
-(defonce store-ref
+(defonce *store
   (atom
-   {:lit-0 1,
-    :vec-0 [{:a 1}],
-    :seq-0 (list {:a 1}),
-    :set-0 #{{:a 1}},
-    :map-0 {:x 0},
-    :in-map {:lit-1 1, :vec-1 [{:a 1}]},
-    :date {:year 2016, :month 10},
-    :user {:name "Chen"},
-    :types {:name 1, "name" 2}}))
+   (merge
+    schema/store
+    {:lit-0 1,
+     :vec-0 [{:a 1}],
+     :seq-0 (list {:a 1}),
+     :set-0 #{{:a 1}},
+     :map-0 {:x 0},
+     :in-map {:lit-1 1, :vec-1 [{:a 1}]},
+     :date {:year 2016, :month 10},
+     :user {:name "Chen"},
+     :types {:name 1, "name" 2}})))
 
 (defn dispatch! [op op-data]
-  (let [new-store (updater @store-ref op op-data)] (reset! store-ref new-store)))
+  (let [new-store (if (= op :states)
+                    (update @*store :states (mutate op-data))
+                    (updater @*store op op-data))]
+    (reset! *store new-store)))
 
-(defonce data-bunch-ref (atom nil))
+(defonce *data-bunch (atom nil))
+
+(defonce *client-store (atom schema/store))
 
 (defn render-data-bunch! []
-  (let [data-bunch (render-bunch (twig-container @store-ref) @data-bunch-ref)
-        changes-ref (atom [])
-        collect! (fn [x] (swap! changes-ref conj x))]
-    (diff-bunch collect! [] @data-bunch-ref data-bunch)
+  (let [data-bunch (render-bunch (twig-container @*store) @*data-bunch)
+        *changes (atom [])
+        collect! (fn [x] (swap! *changes conj x))]
+    (diff-bunch collect! [] @*data-bunch data-bunch)
     (comment println "Data bunch:" (conceal-twig data-bunch))
-    (println "Changes:" @changes-ref)
-    (reset! data-bunch-ref data-bunch)
-    (let [new-client (patch-bunch @client-store-ref @changes-ref)]
+    (println "Changes:" @*changes)
+    (reset! *data-bunch data-bunch)
+    (let [new-client (patch-bunch @*client-store @*changes)]
       (comment println "After patching:" new-client)
-      (reset! client-store-ref new-client))))
+      (reset! *client-store new-client))))
 
-(defonce states-ref (atom {}))
+(def mount-target (.querySelector js/document ".app"))
 
-(defn render-app! []
-  (let [target (.querySelector js/document "#app")]
-    (render! (comp-container @data-bunch-ref @client-store-ref) target dispatch! states-ref)))
+(defn render-app! [renderer]
+  (renderer mount-target (comp-container @*data-bunch @*client-store) dispatch!))
 
-(def ssr-stages
-  (let [ssr-element (.querySelector js/document "#ssr-stages")
-        ssr-markup (.getAttribute ssr-element "content")]
-    (read-string ssr-markup)))
-
-(defn -main! []
-  (enable-console-print!)
-  (if (not (empty? ssr-stages))
-    (let [target (.querySelector js/document "#app")]
-      (falsify-stage!
-       target
-       (render-element (comp-container @data-bunch-ref @client-store-ref) states-ref)
-       dispatch!)))
-  (render-app!)
-  (add-watch store-ref :gc (fn [] (gc-states! states-ref)))
-  (add-watch store-ref :changes render-data-bunch!)
-  (add-watch client-store-ref :changes render-app!)
-  (add-watch states-ref :changes render-app!)
+(defn main! []
+  (if ssr? (render-app! realize-ssr!))
+  (render-app! render!)
+  (add-watch *store :changes render-data-bunch!)
+  (add-watch *client-store :changes (fn [] (render-app! render!)))
   (render-data-bunch!)
   (println "app started!"))
 
-(defn on-jsload! [] (clear-cache!) (render-data-bunch!) (println "code update."))
+(defn reload! [] (clear-cache!) (render-data-bunch!) (println "code update."))
 
-(set! (.-onload js/window) -main!)
+(set! (.-onload js/window) main!)

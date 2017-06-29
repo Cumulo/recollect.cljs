@@ -1,64 +1,62 @@
 {:package "recollect",
+ :root {:ns "main", :def "main!"},
  :files {"comp.panel" {:ns ["ns"
                             "recollect.comp.panel"
+                            [":require-macros" ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "span" "div"]]]
                             [":require"
                              ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                              ["[]" "respo-ui.style" ":as" "ui"]
-                             ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span"]]
-                             ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]
-                             ["[]" "respo.comp.text" ":refer" ["[]" "comp-text"]]]],
+                             ["[]" "respo.core" ":refer" ["[]" "create-comp"]]
+                             ["[]" "respo.comp.space" ":refer" ["[]" "=<"]]]],
                        :defs {"render-button" ["defn"
                                                "render-button"
                                                ["title" "op"]
                                                ["div"
                                                 ["{}"
                                                  [":style" "ui/button"]
-                                                 [":attrs" ["{}" [":inner-text" "title"]]]
+                                                 [":inner-text" "title"]
                                                  [":event" ["{}" [":click" ["on-click" "op"]]]]]]],
                               "style-line" ["def" "style-line" ["{}" [":height" "|40px"]]],
-                              "comp-panel" ["def" "comp-panel" ["create-comp" ":panel" "render"]],
+                              "comp-panel" ["defcomp"
+                                            "comp-panel"
+                                            []
+                                            ["div"
+                                             ["{}"]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change lit-0" ":lit-0"]
+                                              ["=<" "8" "nil"]
+                                              ["render-button" "|Change lit-1" ":lit-1"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change map-0" ":map-0"]
+                                              ["=<" "8" "nil"]
+                                              ["render-button" "|Remove map-0" ":map-0-rm"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change vec-0" ":vec-0"]
+                                              ["=<" "8" "nil"]
+                                              ["render-button" "|Remove vec-0" ":vec-0-rm"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change seq-0" ":seq-0"]
+                                              ["=<" "8" "nil"]
+                                              ["render-button" "|Change seq-0 remove" ":seq-0-rm"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change set-0" ":set-0"]
+                                              ["=<" "8" "0"]
+                                              ["render-button" "|Change set-0 remove" ":set-0-rm"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change date" ":date"]]
+                                             ["div"
+                                              ["{}" [":style" "style-line"]]
+                                              ["render-button" "|Change types" ":types"]]]],
                               "on-click" ["defn"
                                           "on-click"
                                           ["op"]
-                                          ["fn" ["e" "dispatch!"] ["dispatch!" "op" ["rand-int" "100"]]]],
-                              "render" ["defn"
-                                        "render"
-                                        []
-                                        ["fn"
-                                         ["state" "mutate!"]
-                                         ["div"
-                                          ["{}"]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change lit-0" ":lit-0"]
-                                           ["comp-space" "8" "nil"]
-                                           ["render-button" "|Change lit-1" ":lit-1"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change map-0" ":map-0"]
-                                           ["comp-space" "8" "nil"]
-                                           ["render-button" "|Remove map-0" ":map-0-rm"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change vec-0" ":vec-0"]
-                                           ["comp-space" "8" "nil"]
-                                           ["render-button" "|Remove vec-0" ":vec-0-rm"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change seq-0" ":seq-0"]
-                                           ["comp-space" "8" "nil"]
-                                           ["render-button" "|Change seq-0 remove" ":seq-0-rm"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change set-0" ":set-0"]
-                                           ["comp-space" "8" "0"]
-                                           ["render-button" "|Change set-0 remove" ":set-0-rm"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change date" ":date"]]
-                                          ["div"
-                                           ["{}" [":style" "style-line"]]
-                                           ["render-button" "|Change types" ":types"]]]]]},
+                                          ["fn" ["e" "dispatch!"] ["dispatch!" "op" ["rand-int" "100"]]]]},
                        :procs []},
          "twig.container" {:ns ["ns"
                                 "recollect.twig.container"
@@ -242,6 +240,7 @@
                                           ["compare" "x" "y"]
                                           ["compare" "type-x" "type-y"]]]]},
                  :procs []},
+         "schema" {:ns ["ns" "recollect.schema"], :defs {"store" ["def" "store" ["{}" [":states" ["{}"]]]]}, :procs []},
          "diff" {:ns ["ns"
                       "recollect.diff"
                       [":require"
@@ -359,26 +358,25 @@
                  :procs []},
          "comp.container" {:ns ["ns"
                                 "recollect.comp.container"
+                                [":require-macros" ["[]" "respo.macros" ":refer" ["[]" "defcomp" "<>" "span" "div"]]]
                                 [":require"
                                  ["[]" "hsl.core" ":refer" ["[]" "hsl"]]
                                  ["[]" "respo-ui.style" ":as" "ui"]
-                                 ["[]" "respo.alias" ":refer" ["[]" "create-comp" "div" "span"]]
-                                 ["[]" "respo.comp.space" ":refer" ["[]" "comp-space"]]
-                                 ["[]" "respo.comp.text" ":refer" ["[]" "comp-text"]]
+                                 ["[]" "respo.core" ":refer" ["[]" "create-comp"]]
+                                 ["[]" "respo.comp.space" ":refer" ["[]" "=<"]]
                                  ["[]" "recollect.comp.panel" ":refer" ["[]" "comp-panel"]]
                                  ["[]" "respo-value.comp.value" ":refer" ["[]" "render-value"]]]],
-                           :defs {"render" ["defn"
-                                            "render"
-                                            ["data-bunch" "client-store"]
-                                            ["fn"
-                                             ["state" "mutate!"]
-                                             ["div"
-                                              ["{}" [":style" ["merge" "ui/global"]]]
-                                              ["comp-panel"]
-                                              ["--" "div" ["{}"] ["comp-text" ["pr-str" "data-bunch"] "nil"]]
-                                              ["div" ["{}"] ["comp-text" ["pr-str" "client-store"] "nil"]]
-                                              ["render-value" "client-store"]]]],
-                                  "comp-container" ["def" "comp-container" ["create-comp" ":container" "render"]]},
+                           :defs {"comp-container" ["defcomp"
+                                                    "comp-container"
+                                                    ["data-bunch" "client-store"]
+                                                    ["let"
+                                                     [["states" [":states" "client-store"]]]
+                                                     ["div"
+                                                      ["{}" [":style" ["merge" "ui/global"]]]
+                                                      ["comp-panel"]
+                                                      ["--" "div" ["{}"] ["<>" "span" ["pr-str" "data-bunch"] "nil"]]
+                                                      ["div" ["{}"] ["<>" "span" ["pr-str" "client-store"] "nil"]]
+                                                      ["render-value" "states" "client-store"]]]]},
                            :procs []},
          "types" {:ns ["ns"
                        "recollect.types"
@@ -415,10 +413,8 @@
          "main" {:ns ["ns"
                       "recollect.main"
                       [":require"
-                       ["[]"
-                        "respo.core"
-                        ":refer"
-                        ["[]" "render!" "clear-cache!" "falsify-stage!" "render-element" "gc-states!"]]
+                       ["[]" "respo.core" ":refer" ["[]" "render!" "clear-cache!" "realize-ssr!"]]
+                       ["[]" "respo.cursor" ":refer" ["[]" "mutate"]]
                        ["[]" "recollect.comp.container" ":refer" ["[]" "comp-container"]]
                        ["[]" "cljs.reader" ":refer" ["[]" "read-string"]]
                        ["[]" "recollect.bunch" ":refer" ["[]" "render-bunch"]]
@@ -426,89 +422,76 @@
                        ["[]" "recollect.twig.container" ":refer" ["[]" "twig-container"]]
                        ["[]" "recollect.diff" ":refer" ["[]" "diff-bunch"]]
                        ["[]" "recollect.patch" ":refer" ["[]" "patch-bunch"]]
-                       ["[]" "recollect.updater" ":refer" ["[]" "updater"]]]],
-                 :defs {"client-store-ref" ["defonce" "client-store-ref" ["atom" "nil"]],
+                       ["[]" "recollect.updater" ":refer" ["[]" "updater"]]
+                       ["[]" "recollect.schema" ":as" "schema"]]],
+                 :defs {"ssr?" ["def" "ssr?" ["some?" [".querySelector" "js/document" "|meta.respo-ssr"]]],
                         "dispatch!" ["defn"
                                      "dispatch!"
                                      ["op" "op-data"]
                                      ["let"
-                                      [["new-store" ["updater" "@store-ref" "op" "op-data"]]]
-                                      ["reset!" "store-ref" "new-store"]]],
+                                      [["new-store"
+                                        ["if"
+                                         ["=" "op" ":states"]
+                                         ["update" "@*store" ":states" ["mutate" "op-data"]]
+                                         ["updater" "@*store" "op" "op-data"]]]]
+                                      ["reset!" "*store" "new-store"]]],
+                        "*data-bunch" ["defonce" "*data-bunch" ["atom" "nil"]],
+                        "*store" ["defonce"
+                                  "*store"
+                                  ["atom"
+                                   ["merge"
+                                    "schema/store"
+                                    ["{}"
+                                     [":lit-0" "1"]
+                                     [":vec-0" ["[]" ["{}" [":a" "1"]]]]
+                                     [":seq-0" ["list" ["{}" [":a" "1"]]]]
+                                     [":set-0" ["#{}" ["{}" [":a" "1"]]]]
+                                     [":map-0" ["{}" [":x" "0"]]]
+                                     [":in-map" ["{}" [":lit-1" "1"] [":vec-1" ["[]" ["{}" [":a" "1"]]]]]]
+                                     [":date" ["{}" [":year" "2016"] [":month" "10"]]]
+                                     [":user" ["{}" [":name" "|Chen"]]]
+                                     [":types" ["{}" [":name" "1"] ["|name" "2"]]]]]]],
                         "render-data-bunch!" ["defn"
                                               "render-data-bunch!"
                                               []
                                               ["let"
                                                [["data-bunch"
-                                                 ["render-bunch" ["twig-container" "@store-ref"] "@data-bunch-ref"]]
-                                                ["changes-ref" ["atom" ["[]"]]]
-                                                ["collect!" ["fn" ["x"] ["swap!" "changes-ref" "conj" "x"]]]]
-                                               ["diff-bunch" "collect!" ["[]"] "@data-bunch-ref" "data-bunch"]
+                                                 ["render-bunch" ["twig-container" "@*store"] "@*data-bunch"]]
+                                                ["*changes" ["atom" ["[]"]]]
+                                                ["collect!" ["fn" ["x"] ["swap!" "*changes" "conj" "x"]]]]
+                                               ["diff-bunch" "collect!" ["[]"] "@*data-bunch" "data-bunch"]
                                                ["--" "println" "|Data bunch:" ["conceal-twig" "data-bunch"]]
-                                               ["println" "|Changes:" "@changes-ref"]
-                                               ["reset!" "data-bunch-ref" "data-bunch"]
+                                               ["println" "|Changes:" "@*changes"]
+                                               ["reset!" "*data-bunch" "data-bunch"]
                                                ["let"
-                                                [["new-client" ["patch-bunch" "@client-store-ref" "@changes-ref"]]]
+                                                [["new-client" ["patch-bunch" "@*client-store" "@*changes"]]]
                                                 ["--" "println" "|After patching:" "new-client"]
-                                                ["reset!" "client-store-ref" "new-client"]]]],
-                        "-main!" ["defn"
-                                  "-main!"
-                                  []
-                                  ["enable-console-print!"]
-                                  ["if"
-                                   ["not" ["empty?" "ssr-stages"]]
-                                   ["let"
-                                    [["target" [".querySelector" "js/document" "|#app"]]]
-                                    ["falsify-stage!"
-                                     "target"
-                                     ["render-element"
-                                      ["comp-container" "@data-bunch-ref" "@client-store-ref"]
-                                      "states-ref"]
-                                     "dispatch!"]]]
-                                  ["render-app!"]
-                                  ["add-watch" "store-ref" ":gc" ["fn" [] ["gc-states!" "states-ref"]]]
-                                  ["add-watch" "store-ref" ":changes" "render-data-bunch!"]
-                                  ["add-watch" "client-store-ref" ":changes" "render-app!"]
-                                  ["add-watch" "states-ref" ":changes" "render-app!"]
-                                  ["render-data-bunch!"]
-                                  ["println" "|app started!"]],
+                                                ["reset!" "*client-store" "new-client"]]]],
+                        "main!" ["defn"
+                                 "main!"
+                                 []
+                                 ["if" "ssr?" ["render-app!" "realize-ssr!"]]
+                                 ["render-app!" "render!"]
+                                 ["add-watch" "*store" ":changes" "render-data-bunch!"]
+                                 ["add-watch" "*client-store" ":changes" ["fn" [] ["render-app!" "render!"]]]
+                                 ["render-data-bunch!"]
+                                 ["println" "|app started!"]],
                         "render-app!" ["defn"
                                        "render-app!"
-                                       []
-                                       ["let"
-                                        [["target" [".querySelector" "js/document" "|#app"]]]
-                                        ["render!"
-                                         ["comp-container" "@data-bunch-ref" "@client-store-ref"]
-                                         "target"
-                                         "dispatch!"
-                                         "states-ref"]]],
-                        "store-ref" ["defonce"
-                                     "store-ref"
-                                     ["atom"
-                                      ["{}"
-                                       [":lit-0" "1"]
-                                       [":vec-0" ["[]" ["{}" [":a" "1"]]]]
-                                       [":seq-0" ["list" ["{}" [":a" "1"]]]]
-                                       [":set-0" ["#{}" ["{}" [":a" "1"]]]]
-                                       [":map-0" ["{}" [":x" "0"]]]
-                                       [":in-map" ["{}" [":lit-1" "1"] [":vec-1" ["[]" ["{}" [":a" "1"]]]]]]
-                                       [":date" ["{}" [":year" "2016"] [":month" "10"]]]
-                                       [":user" ["{}" [":name" "|Chen"]]]
-                                       [":types" ["{}" [":name" "1"] ["|name" "2"]]]]]],
-                        "states-ref" ["defonce" "states-ref" ["atom" ["{}"]]],
-                        "data-bunch-ref" ["defonce" "data-bunch-ref" ["atom" "nil"]],
-                        "on-jsload!" ["defn"
-                                      "on-jsload!"
-                                      []
-                                      ["clear-cache!"]
-                                      ["render-data-bunch!"]
-                                      ["println" "|code update."]],
-                        "ssr-stages" ["def"
-                                      "ssr-stages"
-                                      ["let"
-                                       [["ssr-element" [".querySelector" "js/document" "|#ssr-stages"]]
-                                        ["ssr-markup" [".getAttribute" "ssr-element" "|content"]]]
-                                       ["read-string" "ssr-markup"]]]},
-                 :procs [["set!" [".-onload" "js/window"] "-main!"]]},
+                                       ["renderer"]
+                                       ["renderer"
+                                        "mount-target"
+                                        ["comp-container" "@*data-bunch" "@*client-store"]
+                                        "dispatch!"]],
+                        "reload!" ["defn"
+                                   "reload!"
+                                   []
+                                   ["clear-cache!"]
+                                   ["render-data-bunch!"]
+                                   ["println" "|code update."]],
+                        "*client-store" ["defonce" "*client-store" ["atom" "schema/store"]],
+                        "mount-target" ["def" "mount-target" [".querySelector" "js/document" "|.app"]]},
+                 :procs [["set!" [".-onload" "js/window"] "main!"]]},
          "patch" {:ns ["ns" "recollect.patch" [":require" ["[]" "clojure.set" ":refer" ["[]" "union" "difference"]]]],
                   :defs {"patch-map-set" ["defn"
                                           "patch-map-set"
@@ -579,4 +562,54 @@
                                               ["empty?" "coord"]
                                               ["dissoc" "base" "path"]
                                               ["update-in" "base" "coord" ["fn" ["cursor"] ["dissoc" "cursor" "path"]]]]]},
-                  :procs []}}}
+                  :procs []},
+         "render" {:ns ["ns"
+                        "recollect.render"
+                        [":require"
+                         ["[]" "respo.render.html" ":refer" ["[]" "make-string"]]
+                         ["[]" "shell-page.core" ":refer" ["[]" "make-page" "spit" "slurp"]]
+                         ["[]" "recollect.comp.container" ":refer" ["[]" "comp-container"]]
+                         ["[]" "recollect.schema" ":as" "schema"]]],
+                   :defs {"main!" ["defn"
+                                   "main!"
+                                   []
+                                   ["if"
+                                    ["=" "js/process.env.env" "|dev"]
+                                    ["spit" "|target/index.html" ["dev-page"]]
+                                    ["spit" "|dist/index.html" ["prod-page"]]]],
+                          "base-info" ["def"
+                                       "base-info"
+                                       ["{}"
+                                        [":title" "|Recollect"]
+                                        [":icon" "|http://logo.cumulo.org/cumulo.png"]
+                                        [":ssr" "nil"]
+                                        [":inner-html" "nil"]]],
+                          "dev-page" ["defn"
+                                      "dev-page"
+                                      []
+                                      ["make-page"
+                                       "|"
+                                       ["merge"
+                                        "base-info"
+                                        ["{}"
+                                         [":styles" ["[]"]]
+                                         [":scripts" ["[]" "|/main.js" "|/browser/lib.js" "|/browser/main.js"]]]]]],
+                          "prod-page" ["defn"
+                                       "prod-page"
+                                       []
+                                       ["let"
+                                        [["html-content" ["make-string" ["comp-container" "schema/store"]]]
+                                         ["manifest" [".parse" "js/JSON" ["slurp" "|dist/assets-manifest.json"]]]
+                                         ["cljs-manifest" [".parse" "js/JSON" ["slurp" "|dist/manifest.json"]]]]
+                                        ["make-page"
+                                         "html-content"
+                                         ["merge"
+                                          "base-info"
+                                          ["{}"
+                                           [":styles" ["[]" ["aget" "manifest" "|main.css"]]]
+                                           [":scripts"
+                                            ["[]"
+                                             ["aget" "manifest" "|main.js"]
+                                             ["->" "cljs-manifest" ["aget" "0"] ["aget" "|js-name"]]
+                                             ["->" "cljs-manifest" ["aget" "1"] ["aget" "|js-name"]]]]]]]]]},
+                   :procs []}}}
