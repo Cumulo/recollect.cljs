@@ -33,17 +33,22 @@
 
 (defn by-key [x y] (compare-more (first x) (first y)))
 
-(defn diff-bunch [collect! coord a b]
-  (if (= (type a) (type b))
-    (cond
-      (twig? a) (if (not (identical? a b)) (diff-bunch collect! coord (:data a) (:data b)))
-      (literal? b) (if (not (identical? a b)) (collect! [coord :m/! b]))
-      (map? b) (diff-map collect! coord a b)
-      (set? b) (diff-set collect! coord a b)
-      (vector? b) (diff-vector collect! coord a b)
-      (seq? b) (diff-seq collect! coord a b)
-      :else (do (println "Unexpected data:" a b)))
-    (collect! [coord :m/! (conceal-twig b)])))
+(defn diff-bunch
+  ([a b]
+   (let [*changes (atom []), collect! (fn [x] (swap! *changes conj x))]
+     (diff-bunch collect! [] a b)
+     @*changes))
+  ([collect! coord a b]
+   (if (= (type a) (type b))
+     (cond
+       (twig? a) (if (not (identical? a b)) (diff-bunch collect! coord (:data a) (:data b)))
+       (literal? b) (if (not (identical? a b)) (collect! [coord :m/! b]))
+       (map? b) (diff-map collect! coord a b)
+       (set? b) (diff-set collect! coord a b)
+       (vector? b) (diff-vector collect! coord a b)
+       (seq? b) (diff-seq collect! coord a b)
+       :else (do (println "Unexpected data:" a b)))
+     (collect! [coord :m/! (conceal-twig b)]))))
 
 (defn find-map-changes [collect! coord a-pairs b-pairs]
   (let [[ka va] (first a-pairs), [kb vb] (first b-pairs)]

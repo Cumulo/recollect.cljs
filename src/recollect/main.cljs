@@ -40,13 +40,11 @@
 
 (defn render-data-bunch! []
   (let [data-bunch (render-bunch (twig-container @*store) @*data-bunch)
-        *changes (atom [])
-        collect! (fn [x] (swap! *changes conj x))]
-    (diff-bunch collect! [] @*data-bunch data-bunch)
+        changes (diff-bunch @*data-bunch data-bunch)]
     (comment println "Data bunch:" (conceal-twig data-bunch))
-    (println "Changes:" @*changes)
+    (println "Changes:" changes)
     (reset! *data-bunch data-bunch)
-    (let [new-client (patch-bunch @*client-store @*changes)]
+    (let [new-client (patch-bunch @*client-store changes)]
       (comment println "After patching:" new-client)
       (reset! *client-store new-client))))
 

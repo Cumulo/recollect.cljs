@@ -339,22 +339,28 @@
                                                 ["recur" "collect!" "coord" ["rest" "a-pairs"] ["rest" "b-pairs"]]]]]]],
                         "diff-bunch" ["defn"
                                       "diff-bunch"
-                                      ["collect!" "coord" "a" "b"]
-                                      ["if"
-                                       ["=" ["type" "a"] ["type" "b"]]
-                                       ["cond"
-                                        [["twig?" "a"]
-                                         ["if"
-                                          ["not" ["identical?" "a" "b"]]
-                                          ["diff-bunch" "collect!" "coord" [":data" "a"] [":data" "b"]]]]
-                                        [["literal?" "b"]
-                                         ["if" ["not" ["identical?" "a" "b"]] ["collect!" ["[]" "coord" ":m/!" "b"]]]]
-                                        [["map?" "b"] ["diff-map" "collect!" "coord" "a" "b"]]
-                                        [["set?" "b"] ["diff-set" "collect!" "coord" "a" "b"]]
-                                        [["vector?" "b"] ["diff-vector" "collect!" "coord" "a" "b"]]
-                                        [["seq?" "b"] ["diff-seq" "collect!" "coord" "a" "b"]]
-                                        [":else" ["do" ["println" "|Unexpected data:" "a" "b"]]]]
-                                       ["collect!" ["[]" "coord" ":m/!" ["conceal-twig" "b"]]]]]},
+                                      [["a" "b"]
+                                       ["let"
+                                        [["*changes" ["atom" ["[]"]]]
+                                         ["collect!" ["fn" ["x"] ["swap!" "*changes" "conj" "x"]]]]
+                                        ["diff-bunch" "collect!" ["[]"] "a" "b"]
+                                        "@*changes"]]
+                                      [["collect!" "coord" "a" "b"]
+                                       ["if"
+                                        ["=" ["type" "a"] ["type" "b"]]
+                                        ["cond"
+                                         [["twig?" "a"]
+                                          ["if"
+                                           ["not" ["identical?" "a" "b"]]
+                                           ["diff-bunch" "collect!" "coord" [":data" "a"] [":data" "b"]]]]
+                                         [["literal?" "b"]
+                                          ["if" ["not" ["identical?" "a" "b"]] ["collect!" ["[]" "coord" ":m/!" "b"]]]]
+                                         [["map?" "b"] ["diff-map" "collect!" "coord" "a" "b"]]
+                                         [["set?" "b"] ["diff-set" "collect!" "coord" "a" "b"]]
+                                         [["vector?" "b"] ["diff-vector" "collect!" "coord" "a" "b"]]
+                                         [["seq?" "b"] ["diff-seq" "collect!" "coord" "a" "b"]]
+                                         [":else" ["do" ["println" "|Unexpected data:" "a" "b"]]]]
+                                        ["collect!" ["[]" "coord" ":m/!" ["conceal-twig" "b"]]]]]]},
                  :procs []},
          "comp.container" {:ns ["ns"
                                 "recollect.comp.container"
@@ -457,14 +463,12 @@
                                               ["let"
                                                [["data-bunch"
                                                  ["render-bunch" ["twig-container" "@*store"] "@*data-bunch"]]
-                                                ["*changes" ["atom" ["[]"]]]
-                                                ["collect!" ["fn" ["x"] ["swap!" "*changes" "conj" "x"]]]]
-                                               ["diff-bunch" "collect!" ["[]"] "@*data-bunch" "data-bunch"]
+                                                ["changes" ["diff-bunch" "@*data-bunch" "data-bunch"]]]
                                                ["--" "println" "|Data bunch:" ["conceal-twig" "data-bunch"]]
-                                               ["println" "|Changes:" "@*changes"]
+                                               ["println" "|Changes:" "changes"]
                                                ["reset!" "*data-bunch" "data-bunch"]
                                                ["let"
-                                                [["new-client" ["patch-bunch" "@*client-store" "@*changes"]]]
+                                                [["new-client" ["patch-bunch" "@*client-store" "changes"]]]
                                                 ["--" "println" "|After patching:" "new-client"]
                                                 ["reset!" "*client-store" "new-client"]]]],
                         "main!" ["defn"
