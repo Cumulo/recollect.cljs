@@ -11,6 +11,7 @@ module.exports =
     contentBase: resolve(__dirname, 'target')
     publicPath: '/'
     host: '0.0.0.0'
+    disableHostCheck: true
   output:
     filename: '[name].js'
   module:
@@ -25,6 +26,6 @@ module.exports =
         name: 'fonts/[name].[ext]'
     ]
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin()
     new webpack.NamedModulesPlugin()
   ]

@@ -30,7 +30,7 @@ module.exports =
       options: { enforce: 'pre' }
     ]
   plugins: [
-    new ExtractTextPlugin('[name].[chunkhash:8].css'),
+    new ExtractTextPlugin('[name].[chunkhash:8].css')
     new UglifyJSPlugin sourceMap: true
     new ManifestPlugin
       fileName: 'assets-manifest.json'
