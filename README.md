@@ -9,7 +9,7 @@ Cached rendering and diff/patch library designed for Cumulo project.
 [![Clojars Project](https://img.shields.io/clojars/v/cumulo/recollect.svg)](https://clojars.org/cumulo/recollect)
 
 ```clojure
-[cumulo/recollect "0.1.8"]
+[cumulo/recollect "0.2.0"]
 ```
 
 ```clojure
