@@ -9,8 +9,7 @@
     (nil? x) 3
     :else (throw (js/Error. (str "Failed to compare, it's: " (pr-str x))))))
 
-(defn literal? [x]
-  (or (number? x) (string? x) (keyword? x) (nil? x) (symbol? x) (true? x) (false? x)))
+(defn literal? [x] (not (coll? x)))
 
 (defn =seq [xs ys]
   (if (empty? xs)

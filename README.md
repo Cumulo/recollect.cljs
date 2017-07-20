@@ -16,7 +16,7 @@ Cached rendering and diff/patch library designed for Cumulo project.
 (recollect.bunch/create-twig twig-name renderer)
 (recollect.bunch/render-bunch twig-data old-data-bunch)
 (recollect.bunch/conceal data-bunch)
-(recollect.diff/diff-bunch a b)
+(recollect.diff/diff-bunch a b {:key :id})
 (recollect.diff/patch-bunch a changes)
 ```
 
@@ -24,6 +24,7 @@ Terms:
 
 * Twig: data wrapped with a renderer to caching purpose
 * Bunch: the whole date tree rendered with Twigs
+* `:key`: to help diff maps
 
 ### Purpose
 
@@ -60,6 +61,12 @@ For record parsing http://stackoverflow.com/a/29133350/883571
 ### Develop
 
 Workflow https://github.com/mvc-works/coworkflow
+
+To run tests:
+
+```bash
+yarn test
+```
 
 ### License
 

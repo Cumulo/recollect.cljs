@@ -7,7 +7,9 @@
     "tiye": "rsync -r dist/ repo.tiye.me:repo/Cumulo/recollect",
     "release": "shadow-cljs release browser",
     "watch": "shadow-cljs watch browser",
+    "watch-test": "shadow-cljs watch test",
     "compile-ssr": "shadow-cljs compile ssr",
+    "compile-test": "shadow-cljs compile test",
     "html-dev": "env=dev node target/ssr.js",
     "html": "node target/ssr.js",
     "hmr": "webpack-dev-server --config webpack.dev.coffee --hot-only",
@@ -15,6 +17,7 @@
     "dev": "yarn compile-ssr && yarn html-dev && yarn hmr",
     "del": "rm -rf dist/*",
     "serve": "http-server dist",
+    "test": "yarn compile-test && node target/test.js",
     "build": "yarn del && yarn release && yarn webpack && yarn compile-ssr && yarn html && yarn serve"
   },
   "repository": {

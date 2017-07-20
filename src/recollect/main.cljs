@@ -21,7 +21,7 @@
     {:lit-0 1,
      :vec-0 [{:a 1}],
      :seq-0 (list {:a 1}),
-     :set-0 #{{:a 1}},
+     :set-0 #{1 :a},
      :map-0 {:x 0},
      :in-map {:lit-1 1, :vec-1 [{:a 1}]},
      :date {:year 2016, :month 10},
@@ -40,7 +40,8 @@
 
 (defn render-data-bunch! []
   (let [data-bunch (render-bunch (twig-container @*store) @*data-bunch)
-        changes (diff-bunch @*data-bunch data-bunch)]
+        options {:key :id}
+        changes (diff-bunch @*data-bunch data-bunch options)]
     (comment println "Data bunch:" (conceal-twig data-bunch))
     (println "Changes:" changes)
     (reset! *data-bunch data-bunch)
