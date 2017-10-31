@@ -1,9 +1,8 @@
 
 (ns recollect.comp.panel
-  (:require-macros [respo.macros :refer [defcomp <> span div]])
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
-            [respo.core :refer [create-comp]]
+            [respo.macros :refer [defcomp <> span div]]
             [respo.comp.space :refer [=<]]))
 
 (defn on-click [op] (fn [e dispatch!] (dispatch! op (rand-int 100))))

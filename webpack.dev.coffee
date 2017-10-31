@@ -19,7 +19,7 @@ module.exports =
       test: /\.css$/
       loaders: ['style-loader', 'css-loader']
     ,
-      test: /\.(eot|svg|ttf|woff2?)(\?.+)?$/
+      test: /\.(eot|svg|ttf|jpg|woff2?)(\?.+)?$/
       loader: 'url-loader'
       query:
         limit: 100

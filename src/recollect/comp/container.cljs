@@ -1,12 +1,11 @@
 
 (ns recollect.comp.container
-  (:require-macros [respo.macros :refer [defcomp <> span div]])
   (:require [hsl.core :refer [hsl]]
             [respo-ui.style :as ui]
-            [respo.core :refer [create-comp]]
+            [respo.macros :refer [defcomp cursor-> <> span div]]
             [respo.comp.space :refer [=<]]
             [recollect.comp.panel :refer [comp-panel]]
-            [respo-value.comp.value :refer [render-value]]))
+            [respo-value.comp.value :refer [comp-value]]))
 
 (defcomp
  comp-container
@@ -17,4 +16,4 @@
     (comp-panel)
     (comment div {} (<> span (pr-str data-bunch) nil))
     (div {} (<> span (pr-str client-store) nil))
-    (render-value states client-store))))
+    (cursor-> :value comp-value states client-store))))

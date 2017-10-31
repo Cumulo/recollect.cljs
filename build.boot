@@ -1,11 +1,17 @@
 
+(defn read-password [guide]
+  (String/valueOf (.readPassword (System/console) guide nil)))
+
 (set-env!
   :resource-paths #{"src"}
-  :dependencies '[])
+  :dependencies '[]
+  :repositories #(conj % ["clojars" {:url "https://clojars.org/repo/"
+                                     :username "jiyinyiyong"
+                                     :password (read-password "Clojars password: ")}]))
 
 (def +version+ "0.2.0")
 
-(deftask build []
+(deftask deploy []
   (comp
     (pom :project     'cumulo/recollect
          :version     +version+
@@ -14,12 +20,4 @@
          :scm         {:url "https://github.com/Cumulo/recollect"}
          :license     {"MIT" "http://opensource.org/licenses/mit-license.php"})
     (jar)
-    (install)
-    (target)))
-
-(deftask deploy []
-  (set-env!
-    :repositories #(conj % ["clojars" {:url "https://clojars.org/repo/"}]))
-  (comp
-    (build)
-    (push :repo "clojars" :gpg-sign (not (.endsWith +version+ "-SNAPSHOT")))))
+    (push :repo "clojars" :gpg-sign false)))
