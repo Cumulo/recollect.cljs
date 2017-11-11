@@ -1,6 +1,8 @@
 
 (ns recollect.patch
-  (:require [clojure.set :refer [union difference]] [recollect.schema :as schema]))
+  (:require [clojure.set :refer [union difference]]
+            [recollect.schema :as schema]
+            [recollect.util :refer [vec-add seq-add]]))
 
 (defn patch-map-set [base coord data] (if (empty? coord) data (assoc-in base coord data)))
 
@@ -8,14 +10,14 @@
   (update-in base coord (fn [cursor] (subvec cursor 0 data))))
 
 (defn patch-vector-append [base coord data]
-  (update-in base coord (fn [cursor] (into [] (concat cursor data)))))
+  (update-in base coord (fn [cursor] (vec-add cursor data))))
 
 (defn patch-seq [base coord data]
   (let [[n content] data]
     (update-in
      base
      coord
-     (fn [cursor] (concat content (if (zero? n) cursor (drop n cursor)))))))
+     (fn [cursor] (seq-add content (if (zero? n) cursor (drop n cursor)))))))
 
 (defn patch-set [base coord data]
   (let [[removed added] data]

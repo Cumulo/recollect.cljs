@@ -21,3 +21,9 @@
 (defn compare-more [x y]
   (let [type-x (type->int x), type-y (type->int y)]
     (if (= type-x type-y) (compare x y) (compare type-x type-y))))
+
+(defn vec-add [xs ys] (if (empty? ys) xs (recur (conj xs (first ys)) (rest ys))))
+
+(defn seq-add' [xs' ys] (if (empty? xs') ys (recur (rest xs') (cons (first xs') ys))))
+
+(defn seq-add [xs ys] (seq-add' (reverse xs) ys))
