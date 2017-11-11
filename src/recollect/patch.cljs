@@ -29,7 +29,7 @@
     (update-in base coord (fn [cursor] (dissoc cursor path)))))
 
 (defn patch-one [base change]
-  (let [[coord op data] change]
+  (let [[op coord data] change]
     (cond
       (= op schema/tree-op-vec-append) (patch-vector-append base coord data)
       (= op schema/tree-op-vec-drop) (patch-vector-drop base coord data)
