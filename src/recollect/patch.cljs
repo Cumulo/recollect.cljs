@@ -1,5 +1,6 @@
 
-(ns recollect.patch (:require [clojure.set :refer [union difference]]))
+(ns recollect.patch
+  (:require [clojure.set :refer [union difference]] [recollect.schema :as schema]))
 
 (defn patch-map-set [base coord data] (if (empty? coord) data (assoc-in base coord data)))
 
@@ -29,14 +30,14 @@
 
 (defn patch-one [base change]
   (let [[coord op data] change]
-    (case op
-      :v/+! (patch-vector-append base coord data)
-      :v/-! (patch-vector-drop base coord data)
-      :m/- (patch-map-remove base coord data)
-      :m/! (patch-map-set base coord data)
-      :st/-+ (patch-set base coord data)
-      :sq/-+ (patch-seq base coord data)
-      (do (println "Unkown op:" op) base))))
+    (cond
+      (= op schema/tree-op-vec-append) (patch-vector-append base coord data)
+      (= op schema/tree-op-vec-drop) (patch-vector-drop base coord data)
+      (= op schema/tree-op-dissoc) (patch-map-remove base coord data)
+      (= op schema/tree-op-assoc) (patch-map-set base coord data)
+      (= op schema/tree-op-set-splice) (patch-set base coord data)
+      (= op schema/tree-op-seq-splice) (patch-seq base coord data)
+      :else (do (println "Unkown op:" op) base))))
 
 (defn patch-bunch [base changes]
   (if (empty? changes) base (recur (patch-one base (first changes)) (rest changes))))

@@ -38,15 +38,14 @@ It's not tested yet, but is trying to trade memory and performance with caching.
 
 ### Diff Operations
 
-```clojure
-[:m/!   coord x]      ; reset data
-[:m/-   coord k]      ; remove key from map
-[:v/+!  coord xs]     ; append to vector
-[:v/-!  coord k]      ; remove after index k
-[:st/++ coord xs]     ; add to set
-[:st/-- coord xs]     ; remove from set
-[:sq/-+ coord [k xs]] ; drop k items and add sequence
-```
+number | name | meaning
+--- | --- | ---
+0 | tree-op-assoc | `assoc-in`
+1 | tree-op-dissoc | `dissoc-in`
+2 | tree-op-vec-append | append items to vector
+3 | tree-op-vec-drop | pop items from vector
+4 | tree-op-set-splice | remove and add to set
+5 | tree-op-seq-splice | remove and add to sequence
 
 For vectors, data is supposed to be manipulated from the tail.
 Items in the new vector are mapped to its old ones by index.
