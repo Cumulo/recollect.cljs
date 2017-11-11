@@ -16,4 +16,4 @@
     (comp-panel)
     (comment div {} (<> span (pr-str data-bunch) nil))
     (div {} (<> span (pr-str client-store) nil))
-    (cursor-> :value comp-value states client-store))))
+    (cursor-> :value comp-value states client-store 0))))

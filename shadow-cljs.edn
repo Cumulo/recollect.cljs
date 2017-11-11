@@ -1,11 +1,11 @@
 
 {:source-paths ["src"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
-                [mvc-works/shell-page   "0.1.5"]
+                [mvc-works/shell-page   "0.1.6"]
                 [mvc-works/verbosely    "0.1.0-rc2"]
                 [respo/ui               "0.2.0"]
-                [respo/value            "0.2.2"]
-                [respo                  "0.7.0-a1"]]
+                [respo/value            "0.2.3"]
+                [respo                  "0.7.1"]]
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
  :builds {:browser {:target :browser
                     :output-dir "target/browser"
@@ -15,7 +15,9 @@
                               :lib {:entries [respo.core respo.macros
                                               respo.comp.inspect]}}
                     :devtools {:after-load recollect.main/reload!
-                               :preloads [shadow.cljs.devtools.client.hud]}
+                               :preloads [shadow.cljs.devtools.client.hud]
+                               :http-root "target"
+                               :http-port 8080}
                     :release {:output-dir "dist/"
                               :module-hash-names 8
                               :build-options {:manifest-name "cljs-manifest.json"}}}
