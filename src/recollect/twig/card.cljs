@@ -1,6 +1,5 @@
 
-(ns recollect.twig.card (:require [recollect.bunch :refer [create-twig]]))
+(ns recollect.twig.card
+  (:require [recollect.bunch :refer [create-twig]] [recollect.macros :refer [deftwig]]))
 
-(defn render [user date] {:user user, :date date})
-
-(def twig-card (create-twig :card render))
+(deftwig twig-card (user date) {:user user, :date date})

@@ -23,7 +23,7 @@ Cached rendering and diff/patch library designed for Cumulo project.
 Terms:
 
 * Twig: data wrapped with a renderer to caching purpose
-* Bunch: the whole date tree rendered with Twigs
+* Bunch: the whole data tree rendered with Twigs
 * `:key`: to help diff maps
 
 ### Purpose
