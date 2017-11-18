@@ -9,11 +9,11 @@
 
 (defcomp
  comp-container
- (data-bunch client-store)
+ (data-twig client-store)
  (let [states (:states client-store)]
    (div
     {:style (merge ui/global)}
     (comp-panel)
-    (comment div {} (<> span (pr-str data-bunch) nil))
+    (comment div {} (<> span (pr-str data-twig) nil))
     (div {} (<> span (pr-str client-store) nil))
     (cursor-> :value comp-value states client-store 0))))

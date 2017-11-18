@@ -13,17 +13,16 @@ Cached rendering and diff/patch library designed for Cumulo project.
 ```
 
 ```clojure
-(recollect.bunch/create-twig twig-name renderer)
-(recollect.bunch/render-bunch twig-data old-data-bunch)
-(recollect.bunch/conceal data-bunch)
-(recollect.diff/diff-bunch a b {:key :id})
-(recollect.diff/patch-bunch a changes)
+(recollect.macros/deftwig twig-name [param] body)
+(recollect.twig/render-twig twig-data old-data-twig)
+(recollect.twig/conceal data-twig)
+(recollect.diff/diff-twig a b {:key :id})
+(recollect.diff/patch-twig a changes)
 ```
 
 Terms:
 
 * Twig: data wrapped with a renderer to caching purpose
-* Bunch: the whole data tree rendered with Twigs
 * `:key`: to help diff maps
 
 ### Purpose

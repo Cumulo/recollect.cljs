@@ -1,8 +1,8 @@
 
 (ns recollect.test
   (:require [cljs.test :refer [deftest is run-tests]]
-            [recollect.diff :refer [diff-bunch]]
-            [recollect.patch :refer [patch-bunch]]
+            [recollect.diff :refer [diff-twig]]
+            [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]))
 
@@ -25,8 +25,8 @@
        changes [[schema/tree-op-assoc [:a 1] 6]
                 [schema/tree-op-assoc [:a 2] 7]
                 [schema/tree-op-assoc [:a 3] 8]]]
-   (is (= changes (diff-bunch a b options)))
-   (is (= b (patch-bunch a changes)))))
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
 
 (deftest
  test-diff-maps
@@ -35,8 +35,8 @@
        b {:a {:c 2}}
        options {:key :id}
        changes [[schema/tree-op-dissoc [:a] :b] [schema/tree-op-assoc [:a :c] 2]]]
-   (is (= changes (diff-bunch a b options)))
-   (is (= b (patch-bunch a changes)))))
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
 
 (deftest
  test-diff-sets
@@ -45,8 +45,8 @@
        b {:a #{2 3 4}}
        options {:key :id}
        changes [[schema/tree-op-set-splice [:a] [#{1} #{4}]]]]
-   (is (= changes (diff-bunch a b options)))
-   (is (= b (patch-bunch a changes)))))
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
 
 (deftest
  test-diff-map-by-ids
@@ -55,8 +55,8 @@
        b {:id 2, :data 1}
        options {:key :id}
        changes [[schema/tree-op-assoc [] {:id 2, :data 1}]]]
-   (is (= changes (diff-bunch a b options)))
-   (is (= b (patch-bunch a changes)))))
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
 
 (deftest
  test-diff-map-same-id
@@ -65,7 +65,7 @@
        b {:id 1, :data 2}
        options {:key :id}
        changes [[schema/tree-op-assoc [:data] 2]]]
-   (is (= changes (diff-bunch a b options)))
-   (is (= b (patch-bunch a changes)))))
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
 
 (defn main! [] (println "Test loade!") (run-tests))

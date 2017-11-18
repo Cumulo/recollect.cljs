@@ -4,11 +4,11 @@
             [respo.cursor :refer [mutate]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [recollect.bunch :refer [render-bunch]]
+            [recollect.twig :refer [render-twig]]
             [recollect.types :refer [conceal-twig]]
             [recollect.twig.container :refer [twig-container]]
-            [recollect.diff :refer [diff-bunch]]
-            [recollect.patch :refer [patch-bunch]]
+            [recollect.diff :refer [diff-twig]]
+            [recollect.patch :refer [patch-twig]]
             [recollect.updater :refer [updater]]
             [recollect.schema :as schema]))
 
@@ -34,34 +34,34 @@
                     (updater @*store op op-data))]
     (reset! *store new-store)))
 
-(defonce *data-bunch (atom nil))
+(defonce *data-twig (atom nil))
 
 (defonce *client-store (atom schema/store))
-
-(defn render-data-bunch! []
-  (let [data-bunch (render-bunch (twig-container @*store) @*data-bunch)
-        options {:key :id}
-        changes (diff-bunch @*data-bunch data-bunch options)]
-    (comment println "Data bunch:" (conceal-twig data-bunch))
-    (println "Changes:" changes)
-    (reset! *data-bunch data-bunch)
-    (let [new-client (patch-bunch @*client-store changes)]
-      (comment println "After patching:" new-client)
-      (reset! *client-store new-client))))
 
 (def mount-target (.querySelector js/document ".app"))
 
 (defn render-app! [renderer]
-  (renderer mount-target (comp-container @*data-bunch @*client-store) dispatch!))
+  (renderer mount-target (comp-container @*data-twig @*client-store) dispatch!))
+
+(defn render-data-twig! []
+  (let [data-twig (render-twig (twig-container @*store) @*data-twig)
+        options {:key :id}
+        changes (diff-twig @*data-twig data-twig options)]
+    (comment println "Data twig:" (conceal-twig data-twig))
+    (println "Changes:" changes)
+    (reset! *data-twig data-twig)
+    (let [new-client (patch-twig @*client-store changes)]
+      (comment println "After patching:" new-client)
+      (reset! *client-store new-client))))
 
 (defn main! []
   (if ssr? (render-app! realize-ssr!))
   (render-app! render!)
-  (add-watch *store :changes render-data-bunch!)
+  (add-watch *store :changes render-data-twig!)
   (add-watch *client-store :changes (fn [] (render-app! render!)))
-  (render-data-bunch!)
+  (render-data-twig!)
   (println "app started!"))
 
-(defn reload! [] (clear-cache!) (render-data-bunch!) (println "code update."))
+(defn reload! [] (clear-cache!) (render-data-twig!) (println "code update."))
 
 (set! (.-onload js/window) main!)

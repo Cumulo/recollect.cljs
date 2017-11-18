@@ -9,11 +9,11 @@
 
 (declare find-vector-changes)
 
+(declare diff-twig)
+
 (declare diff-vector)
 
 (declare find-map-changes)
-
-(declare diff-bunch)
 
 (defn diff-set [collect! coord a b]
   (comment assert (or (coll? a) (coll? b)) "[Recollect] sets to diff should hold literals")
@@ -35,24 +35,6 @@
   (find-seq-changes collect! coord (reverse a) (reverse b) options))
 
 (defn by-key [x y] (compare-more (first x) (first y)))
-
-(defn diff-bunch
-  ([a b options]
-   (let [*changes (atom []), collect! (fn [x] (swap! *changes conj x))]
-     (diff-bunch collect! [] a b options)
-     @*changes))
-  ([collect! coord a b options]
-   (if (= (type a) (type b))
-     (cond
-       (twig? a)
-         (if (not (identical? a b)) (recur collect! coord (:data a) (:data b) options))
-       (literal? b) (if (not (identical? a b)) (collect! [schema/tree-op-assoc coord b]))
-       (map? b) (diff-map collect! coord a b options)
-       (set? b) (diff-set collect! coord a b)
-       (vector? b) (diff-vector collect! coord a b options)
-       (seq? b) (diff-seq collect! coord a b options)
-       :else (do (println "Unexpected data:" a b)))
-     (collect! [schema/tree-op-assoc coord (conceal-twig b)]))))
 
 (defn find-map-changes [collect! coord a-pairs b-pairs options]
   (let [[ka va] (first a-pairs), [kb vb] (first b-pairs)]
@@ -76,11 +58,29 @@
          (recur collect! coord a-pairs (rest b-pairs) options))
       :else
         (do
-         (diff-bunch collect! (conj coord ka) va vb options)
+         (diff-twig collect! (conj coord ka) va vb options)
          (recur collect! coord (rest a-pairs) (rest b-pairs) options)))))
 
 (defn diff-vector [collect! coord a b options]
   (find-vector-changes collect! 0 coord a b options))
+
+(defn diff-twig
+  ([a b options]
+   (let [*changes (atom []), collect! (fn [x] (swap! *changes conj x))]
+     (diff-twig collect! [] a b options)
+     @*changes))
+  ([collect! coord a b options]
+   (if (= (type a) (type b))
+     (cond
+       (twig? a)
+         (if (not (identical? a b)) (recur collect! coord (:data a) (:data b) options))
+       (literal? b) (if (not (identical? a b)) (collect! [schema/tree-op-assoc coord b]))
+       (map? b) (diff-map collect! coord a b options)
+       (set? b) (diff-set collect! coord a b)
+       (vector? b) (diff-vector collect! coord a b options)
+       (seq? b) (diff-seq collect! coord a b options)
+       :else (do (println "Unexpected data:" a b)))
+     (collect! [schema/tree-op-assoc coord (conceal-twig b)]))))
 
 (defn find-vector-changes [collect! idx coord a-pairs b-pairs options]
   (comment println idx a-pairs b-pairs)
@@ -90,7 +90,7 @@
     (empty? a-pairs) (collect! [schema/tree-op-vec-append coord (conceal-twig b-pairs)])
     :else
       (do
-       (diff-bunch collect! (conj coord idx) (first a-pairs) (first b-pairs) options)
+       (diff-twig collect! (conj coord idx) (first a-pairs) (first b-pairs) options)
        (recur collect! (inc idx) coord (rest a-pairs) (rest b-pairs) options))))
 
 (defn diff-map [collect! coord a b options]

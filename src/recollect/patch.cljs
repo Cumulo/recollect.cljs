@@ -41,5 +41,5 @@
       (= op schema/tree-op-seq-splice) (patch-seq base coord data)
       :else (do (println "Unkown op:" op) base))))
 
-(defn patch-bunch [base changes]
+(defn patch-twig [base changes]
   (if (empty? changes) base (recur (patch-one base (first changes)) (rest changes))))
