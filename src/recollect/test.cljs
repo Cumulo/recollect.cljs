@@ -68,4 +68,11 @@
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
 
+(deftest
+ test-diff-same-sets
+ ()
+ (let [a {:a #{1 2 3}}, b {:a #{1 2 3}}, options {:key :id}, changes []]
+   (print changes)
+   (is (= changes (diff-twig a b options)))))
+
 (defn main! [] (println "Test loade!") (run-tests))

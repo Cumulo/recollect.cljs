@@ -17,8 +17,9 @@
 
 (defn diff-set [collect! coord a b]
   (comment assert (or (coll? a) (coll? b)) "[Recollect] sets to diff should hold literals")
-  (let [added (difference b a), removed (difference a b)]
-    (collect! [schema/tree-op-set-splice coord [removed added]])))
+  (if (not= a b)
+    (let [added (difference b a), removed (difference a b)]
+      (collect! [schema/tree-op-set-splice coord [removed added]]))))
 
 (defn find-seq-changes [collect! coord ra rb options]
   (cond
