@@ -75,6 +75,7 @@
      (cond
        (twig? a)
          (if (not (identical? a b)) (recur collect! coord (:data a) (:data b) options))
+       (keyword? b) (if (not= a b) (collect! [schema/tree-op-assoc coord b]))
        (literal? b) (if (not (identical? a b)) (collect! [schema/tree-op-assoc coord b]))
        (map? b) (diff-map collect! coord a b options)
        (set? b) (diff-set collect! coord a b)

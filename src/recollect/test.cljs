@@ -4,27 +4,13 @@
             [recollect.diff :refer [diff-twig]]
             [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
-            [recollect.util :refer [vec-add seq-add]]))
+            [recollect.util :refer [vec-add seq-add]]
+            [shadow.test.env :refer [register-test]]))
 
 (deftest
- test-vec-add
+ test-diff-same-keyword
  ()
- (let [a [1 2 3 4], b [5 6 7 8]] (is (= (vec-add a b) [1 2 3 4 5 6 7 8]))))
-
-(deftest
- test-seq-add
- ()
- (let [a (list 1 2 3 4), b (list 5 6 7 8)] (is (= (seq-add a b) (list 1 2 3 4 5 6 7 8)))))
-
-(deftest
- test-diff-vectors
- ()
- (let [a {:a [1 2 3 4]}
-       b {:a [1 6 7 8]}
-       options {:key :id}
-       changes [[schema/tree-op-assoc [:a 1] 6]
-                [schema/tree-op-assoc [:a 2] 7]
-                [schema/tree-op-assoc [:a 3] 8]]]
+ (let [a :x, b :x, options {:key :id}, changes []]
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
 
@@ -49,6 +35,13 @@
    (is (= b (patch-twig a changes)))))
 
 (deftest
+ test-diff-same-sets
+ ()
+ (let [a {:a #{1 2 3}}, b {:a #{1 2 3}}, options {:key :id}, changes []]
+   (print changes)
+   (is (= changes (diff-twig a b options)))))
+
+(deftest
  test-diff-map-by-ids
  ()
  (let [a {:id 1, :data 1}
@@ -57,6 +50,23 @@
        changes [[schema/tree-op-assoc [] {:id 2, :data 1}]]]
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
+
+(deftest
+ test-diff-vectors
+ ()
+ (let [a {:a [1 2 3 4]}
+       b {:a [1 6 7 8]}
+       options {:key :id}
+       changes [[schema/tree-op-assoc [:a 1] 6]
+                [schema/tree-op-assoc [:a 2] 7]
+                [schema/tree-op-assoc [:a 3] 8]]]
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
+
+(deftest
+ test-vec-add
+ ()
+ (let [a [1 2 3 4], b [5 6 7 8]] (is (= (vec-add a b) [1 2 3 4 5 6 7 8]))))
 
 (deftest
  test-diff-map-same-id
@@ -69,10 +79,8 @@
    (is (= b (patch-twig a changes)))))
 
 (deftest
- test-diff-same-sets
+ test-seq-add
  ()
- (let [a {:a #{1 2 3}}, b {:a #{1 2 3}}, options {:key :id}, changes []]
-   (print changes)
-   (is (= changes (diff-twig a b options)))))
+ (let [a (list 1 2 3 4), b (list 5 6 7 8)] (is (= (seq-add a b) (list 1 2 3 4 5 6 7 8)))))
 
 (defn main! [] (println "Test loade!") (run-tests))
