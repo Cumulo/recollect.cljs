@@ -2,10 +2,10 @@
 {:source-paths ["src" "polyfill"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [mvc-works/shell-page   "0.1.6"]
-                [mvc-works/verbosely    "0.1.0-rc2"]
-                [respo/ui               "0.2.0"]
+                [mvc-works/verbosely    "0.1.2"]
+                [respo/ui               "0.2.3"]
                 [respo/value            "0.2.3"]
-                [respo                  "0.7.1"]]
+                [respo                  "0.8.3"]]
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
  :builds {:browser {:target :browser
                     :output-dir "target/browser"

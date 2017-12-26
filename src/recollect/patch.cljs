@@ -4,13 +4,12 @@
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]))
 
+(defn patch-map-remove [base coord path]
+  (if (empty? coord)
+    (dissoc base path)
+    (update-in base coord (fn [cursor] (dissoc cursor path)))))
+
 (defn patch-map-set [base coord data] (if (empty? coord) data (assoc-in base coord data)))
-
-(defn patch-vector-drop [base coord data]
-  (update-in base coord (fn [cursor] (subvec cursor 0 data))))
-
-(defn patch-vector-append [base coord data]
-  (update-in base coord (fn [cursor] (vec-add cursor data))))
 
 (defn patch-seq [base coord data]
   (let [[n content] data]
@@ -25,10 +24,11 @@
       (-> base (difference removed) (union added))
       (update-in base coord (fn [cursor] (-> cursor (difference removed) (union added)))))))
 
-(defn patch-map-remove [base coord path]
-  (if (empty? coord)
-    (dissoc base path)
-    (update-in base coord (fn [cursor] (dissoc cursor path)))))
+(defn patch-vector-append [base coord data]
+  (update-in base coord (fn [cursor] (vec-add cursor data))))
+
+(defn patch-vector-drop [base coord data]
+  (update-in base coord (fn [cursor] (subvec cursor 0 data))))
 
 (defn patch-one [base change]
   (let [[op coord data] change]

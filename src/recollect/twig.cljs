@@ -6,11 +6,17 @@
 
 (declare render-seq)
 
-(declare render-vector)
-
 (declare render-set)
 
 (declare render-twig)
+
+(declare render-vector)
+
+(defn create-twig [twig-name renderer]
+  (fn [& args] (Twig. twig-name args (apply renderer args) renderer)))
+
+(defn render-vector [data-tree cached]
+  (->> data-tree (map-indexed (fn [idx x] (render-twig x (get cached idx)))) (into [])))
 
 (defn render-twig [data-tree cached-data-tree]
   (comment println "Calling render-twig:" data-tree cached-data-tree)
@@ -40,9 +46,6 @@
 (defn render-set [data-tree cached]
   (->> data-tree (map (fn [x] (render-twig x nil))) (into #{})))
 
-(defn render-vector [data-tree cached]
-  (->> data-tree (map-indexed (fn [idx x] (render-twig x (get cached idx)))) (into [])))
-
 (defn render-seq [data-tree cached]
   (let [size (count data-tree), cached-list (into [] cached), length (count cached-list)]
     (->> data-tree
@@ -53,6 +56,3 @@
   (->> data-tree
        (map (fn [entry] (let [[k v] entry] [k (render-twig v (get cached k))])))
        (into {})))
-
-(defn create-twig [twig-name renderer]
-  (fn [& args] (Twig. twig-name args (apply renderer args) renderer)))
