@@ -15,11 +15,7 @@
 
 (declare find-map-changes)
 
-(defn diff-set [collect! coord a b]
-  (comment assert (or (coll? a) (coll? b)) "[Recollect] sets to diff should hold literals")
-  (if (not= a b)
-    (let [added (difference b a), removed (difference a b)]
-      (collect! [schema/tree-op-set-splice coord [removed added]]))))
+(defn by-key [x y] (compare-more (first x) (first y)))
 
 (defn find-seq-changes [collect! coord ra rb options]
   (cond
@@ -35,7 +31,22 @@
 (defn diff-seq [collect! coord a b options]
   (find-seq-changes collect! coord (reverse a) (reverse b) options))
 
-(defn by-key [x y] (compare-more (first x) (first y)))
+(defn diff-set [collect! coord a b]
+  (comment assert (or (coll? a) (coll? b)) "[Recollect] sets to diff should hold literals")
+  (if (not= a b)
+    (let [added (difference b a), removed (difference a b)]
+      (collect! [schema/tree-op-set-splice coord [removed added]]))))
+
+(defn find-vector-changes [collect! idx coord a-pairs b-pairs options]
+  (comment println idx a-pairs b-pairs)
+  (cond
+    (and (empty? a-pairs) (empty? b-pairs)) nil
+    (empty? b-pairs) (collect! [schema/tree-op-vec-drop coord idx])
+    (empty? a-pairs) (collect! [schema/tree-op-vec-append coord (conceal-twig b-pairs)])
+    :else
+      (do
+       (diff-twig collect! (conj coord idx) (first a-pairs) (first b-pairs) options)
+       (recur collect! (inc idx) coord (rest a-pairs) (rest b-pairs) options))))
 
 (defn find-map-changes [collect! coord a-pairs b-pairs options]
   (let [[ka va] (first a-pairs), [kb vb] (first b-pairs)]
@@ -83,17 +94,6 @@
        (seq? b) (diff-seq collect! coord a b options)
        :else (do (println "Unexpected data:" a b)))
      (collect! [schema/tree-op-assoc coord (conceal-twig b)]))))
-
-(defn find-vector-changes [collect! idx coord a-pairs b-pairs options]
-  (comment println idx a-pairs b-pairs)
-  (cond
-    (and (empty? a-pairs) (empty? b-pairs)) nil
-    (empty? b-pairs) (collect! [schema/tree-op-vec-drop coord idx])
-    (empty? a-pairs) (collect! [schema/tree-op-vec-append coord (conceal-twig b-pairs)])
-    :else
-      (do
-       (diff-twig collect! (conj coord idx) (first a-pairs) (first b-pairs) options)
-       (recur collect! (inc idx) coord (rest a-pairs) (rest b-pairs) options))))
 
 (defn diff-map [collect! coord a b options]
   (let [a-pairs (sort by-key a), b-pairs (sort by-key b), k (:key options)]

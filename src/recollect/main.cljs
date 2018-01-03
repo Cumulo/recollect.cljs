@@ -12,7 +12,9 @@
             [recollect.updater :refer [updater]]
             [recollect.schema :as schema]))
 
-(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
+(defonce *client-store (atom schema/store))
+
+(defonce *data-twig (atom nil))
 
 (defonce *store
   (atom
@@ -34,10 +36,6 @@
                     (updater @*store op op-data))]
     (reset! *store new-store)))
 
-(defonce *data-twig (atom nil))
-
-(defonce *client-store (atom schema/store))
-
 (def mount-target (.querySelector js/document ".app"))
 
 (defn render-app! [renderer]
@@ -53,6 +51,8 @@
     (let [new-client (patch-twig @*client-store changes)]
       (comment println "After patching:" new-client)
       (reset! *client-store new-client))))
+
+(def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
 (defn main! []
   (if ssr? (render-app! realize-ssr!))

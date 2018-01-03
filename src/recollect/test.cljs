@@ -8,9 +8,22 @@
             [shadow.test.env :refer [register-test]]))
 
 (deftest
- test-diff-same-keyword
+ test-diff-map-by-ids
  ()
- (let [a :x, b :x, options {:key :id}, changes []]
+ (let [a {:id 1, :data 1}
+       b {:id 2, :data 1}
+       options {:key :id}
+       changes [[schema/tree-op-assoc [] {:id 2, :data 1}]]]
+   (is (= changes (diff-twig a b options)))
+   (is (= b (patch-twig a changes)))))
+
+(deftest
+ test-diff-map-same-id
+ ()
+ (let [a {:id 1, :data 1}
+       b {:id 1, :data 2}
+       options {:key :id}
+       changes [[schema/tree-op-assoc [:data] 2]]]
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
 
@@ -25,12 +38,9 @@
    (is (= b (patch-twig a changes)))))
 
 (deftest
- test-diff-sets
+ test-diff-same-keyword
  ()
- (let [a {:a #{1 2 3}}
-       b {:a #{2 3 4}}
-       options {:key :id}
-       changes [[schema/tree-op-set-splice [:a] [#{1} #{4}]]]]
+ (let [a :x, b :x, options {:key :id}, changes []]
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
 
@@ -42,12 +52,12 @@
    (is (= changes (diff-twig a b options)))))
 
 (deftest
- test-diff-map-by-ids
+ test-diff-sets
  ()
- (let [a {:id 1, :data 1}
-       b {:id 2, :data 1}
+ (let [a {:a #{1 2 3}}
+       b {:a #{2 3 4}}
        options {:key :id}
-       changes [[schema/tree-op-assoc [] {:id 2, :data 1}]]]
+       changes [[schema/tree-op-set-splice [:a] [#{1} #{4}]]]]
    (is (= changes (diff-twig a b options)))
    (is (= b (patch-twig a changes)))))
 
@@ -64,23 +74,13 @@
    (is (= b (patch-twig a changes)))))
 
 (deftest
- test-vec-add
- ()
- (let [a [1 2 3 4], b [5 6 7 8]] (is (= (vec-add a b) [1 2 3 4 5 6 7 8]))))
-
-(deftest
- test-diff-map-same-id
- ()
- (let [a {:id 1, :data 1}
-       b {:id 1, :data 2}
-       options {:key :id}
-       changes [[schema/tree-op-assoc [:data] 2]]]
-   (is (= changes (diff-twig a b options)))
-   (is (= b (patch-twig a changes)))))
-
-(deftest
  test-seq-add
  ()
  (let [a (list 1 2 3 4), b (list 5 6 7 8)] (is (= (seq-add a b) (list 1 2 3 4 5 6 7 8)))))
+
+(deftest
+ test-vec-add
+ ()
+ (let [a [1 2 3 4], b [5 6 7 8]] (is (= (vec-add a b) [1 2 3 4 5 6 7 8]))))
 
 (defn main! [] (println "Test loade!") (run-tests))
