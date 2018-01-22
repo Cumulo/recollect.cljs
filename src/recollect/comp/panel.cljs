@@ -1,7 +1,7 @@
 
 (ns recollect.comp.panel
   (:require [hsl.core :refer [hsl]]
-            [respo-ui.style :as ui]
+            [respo-ui.core :as ui]
             [respo.macros :refer [defcomp <> span div]]
             [respo.comp.space :refer [=<]]))
 

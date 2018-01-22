@@ -56,7 +56,7 @@ For record parsing http://stackoverflow.com/a/29133350/883571
 
 ### Develop
 
-Workflow https://github.com/mvc-works/coworkflow
+Workflow https://github.com/mvc-works/calcit-workflow
 
 To run tests:
 
