@@ -4,21 +4,9 @@
   "description": "Recollect data renderer",
   "main": "index.js",
   "scripts": {
-    "cdn": "rsync -avr --progress dist/* tiye.me:cdn/recollect",
-    "tiye": "rsync -avr --progress dist/{index.html,manifest.json} tiye.me:repo/Cumulo/recollect/",
-    "upload": "yarn cdn && yarn tiye",
-    "release": "shadow-cljs release browser",
     "watch": "shadow-cljs watch browser",
-    "watch-test": "shadow-cljs watch test",
-    "compile-ssr": "shadow-cljs compile ssr",
-    "compile-test": "shadow-cljs compile test",
-    "html-dev": "env=dev node target/ssr.js && cp entry/manifest.json target/",
-    "html": "node target/ssr.js && cp entry/manifest.json dist/",
-    "index.html": "yarn compile-ssr && yarn html-dev",
-    "del": "rm -rf dist/*",
-    "serve": "http-server dist",
-    "test": "yarn compile-test && node target/test.js",
-    "build": "yarn del && yarn release && yarn compile-ssr && yarn html"
+    "serve": "http-server dist -s",
+    "repl": "rlwrap shadow-cljs clj-repl"
   },
   "repository": {
     "type": "git",
@@ -28,6 +16,6 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.11.1",
-    "shadow-cljs": "^2.0.140"
+    "shadow-cljs": "^2.1.7"
   }
 }

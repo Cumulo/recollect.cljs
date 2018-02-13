@@ -8,7 +8,7 @@
 (defn on-click [op] (fn [e dispatch!] (dispatch! op (rand-int 100))))
 
 (defn render-button [title op]
-  (div {:style ui/button, :inner-text title, :event {:click (on-click op)}}))
+  (div {:style ui/button, :inner-text title, :on-click (on-click op)}))
 
 (def style-line {:height "40px"})
 
