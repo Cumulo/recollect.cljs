@@ -4,3 +4,5 @@
 /node_modules
 .nrepl-port
 .shadow-cljs/
+meyvn-pom.xml
+.cpcache/

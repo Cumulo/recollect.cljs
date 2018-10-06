@@ -1,0 +1,9 @@
+
+{:pom {:group-id "cumulo",
+       :artifact-id "recollect",
+       :version "0.4.4",
+       :name "Cached rendering and diff/patch library designed for Cumulo project."}
+ :packaging {:jar {:enabled true
+                   :remote-repository {:id "clojars"
+                                       :url "https://clojars.org/repo"}}}
+ :scm {:enabled true}}
