@@ -6,7 +6,11 @@
     (if (empty? ys) true false)
     (if (empty? ys)
       false
-      (if (identical? (first xs) (first ys)) (recur (rest xs) (rest ys)) false))))
+      (if (identical? (first xs) (first ys))
+        (if (and (fn? (first xs)) (fn? (first ys)))
+          (do (comment "functions changes designed to be ignored.") true)
+          (recur (rest xs) (rest ys)))
+        false))))
 
 (defn type->int [x]
   (cond
