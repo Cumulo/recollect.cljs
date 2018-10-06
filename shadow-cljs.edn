@@ -2,12 +2,12 @@
 {:source-paths ["src" "polyfill" "cli"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
                 [mvc-works/verbosely    "0.1.2"]
-                [mvc-works/shell-page   "0.1.7"]
-                [respo                  "0.8.15"]
-                [respo/ui               "0.3.2"]
+                [mvc-works/shell-page   "0.1.8"]
+                [respo                  "0.8.20"]
+                [respo/ui               "0.3.6"]
                 [respo/value            "0.2.4"]]
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
- :socket-repl {:port 5900}
+ :socket-repl false
  :builds {:browser {:target :browser
                     :output-dir "target/"
                     :asset-path "./"
@@ -18,7 +18,8 @@
                     :devtools {:after-load recollect.main/reload!
                                :preloads [shadow.cljs.devtools.client.hud]
                                :http-root "target"
-                               :http-port 7000}
+                               :http-port 7000
+                               :loader-mode :eval}
                     :release {:output-dir "dist/"
                               :module-hash-names 8
                               :build-options {:manifest-name "assets.edn"}}}
