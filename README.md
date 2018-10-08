@@ -7,7 +7,7 @@ Cached rendering and diff/patch library designed for Cumulo project.
 ### API [![Clojars Project](https://img.shields.io/clojars/v/cumulo/recollect.svg)](https://clojars.org/cumulo/recollect)
 
 ```clojure
-[cumulo/recollect "0.4.3"]
+[cumulo/recollect "0.4.4"]
 ```
 
 ```clojure
@@ -49,6 +49,8 @@ Items in the new vector are mapped to its old ones by index.
 
 For sequences, unchanged values since the tail is kept.
 Changed elements in the front will be replaced directly.
+
+For function arguments in `deftwig`, changes are ignored.
 
 ### Related
 

@@ -5,7 +5,22 @@
             [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]
-            [shadow.test.env :refer [register-test]]))
+            [shadow.test.env :refer [register-test]]
+            [recollect.macros :refer [deftwig]]
+            [recollect.twig :refer [render-twig]]))
+
+(deftest
+ test-diff-funcs
+ ()
+ (let [A (deftwig twig-a0 (f) (f))
+       B (deftwig twig-b0 (f) (f))
+       fx (fn [] "x")
+       a0 (A fx)
+       b (B fx)
+       a1 (render-twig b a0)
+       options {:key :id}
+       changes [1]]
+   (is (= changes (diff-twig a0 a1 options)))))
 
 (deftest
  test-diff-map-by-ids
@@ -83,4 +98,4 @@
  ()
  (let [a [1 2 3 4], b [5 6 7 8]] (is (= (vec-add a b) [1 2 3 4 5 6 7 8]))))
 
-(defn main! [] (println "Test loade!") (run-tests))
+(defn main! [] (println "Test loaded!") (run-tests))
