@@ -1,6 +1,7 @@
 
 (ns recollect.twig
-  (:require [recollect.types :refer [Twig twig?]] [recollect.util :refer [=seq literal?]]))
+  (:require [recollect.types :refer [Twig twig?]] [recollect.util :refer [=seq literal?]])
+  (:require-macros [recollect.twig]))
 
 (declare render-map)
 

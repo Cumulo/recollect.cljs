@@ -1,4 +1,4 @@
-(ns recollect.macros)
+(ns recollect.twig)
 
 (defmacro deftwig [twig-name params & body]
   `(defn ~twig-name [~@params]

@@ -6,7 +6,7 @@
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]
             [shadow.test.env :refer [register-test]]
-            [recollect.macros :refer [deftwig]]
+            [recollect.twig :refer [deftwig]]
             [recollect.twig :refer [render-twig]]))
 
 (deftest
@@ -19,7 +19,7 @@
        b (B fx)
        a1 (render-twig b a0)
        options {:key :id}
-       changes [1]]
+       changes []]
    (is (= changes (diff-twig a0 a1 options)))))
 
 (deftest
