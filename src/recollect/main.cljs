@@ -63,5 +63,3 @@
   (println "app started!"))
 
 (defn reload! [] (clear-cache!) (render-data-twig!) (println "code update."))
-
-(set! (.-onload js/window) main!)

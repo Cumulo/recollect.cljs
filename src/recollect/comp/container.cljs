@@ -2,7 +2,7 @@
 (ns recollect.comp.container
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
-            [respo.macros :refer [defcomp cursor-> <> span div]]
+            [respo.core :refer [defcomp cursor-> <> span div]]
             [respo.comp.space :refer [=<]]
             [recollect.comp.panel :refer [comp-panel]]
             [respo-value.comp.value :refer [comp-value]]))

@@ -2,7 +2,7 @@
 (ns recollect.comp.panel
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
-            [respo.macros :refer [defcomp <> span div]]
+            [respo.core :refer [defcomp <> span div]]
             [respo.comp.space :refer [=<]]))
 
 (defn on-click [op] (fn [e dispatch!] (dispatch! op (rand-int 100))))

@@ -1,25 +1,19 @@
 
 {:source-paths ["src" "polyfill" "cli"]
  :dependencies [[mvc-works/hsl          "0.1.2"]
-                [mvc-works/verbosely    "0.1.2"]
-                [mvc-works/shell-page   "0.1.8"]
-                [respo                  "0.8.20"]
-                [respo/ui               "0.3.6"]
-                [respo/value            "0.2.4"]]
+                [mvc-works/shell-page   "0.1.9"]
+                [respo                  "0.10.2"]
+                [respo/ui               "0.3.10"]
+                [respo/value            "0.2.5"]]
  :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
  :socket-repl false
  :builds {:browser {:target :browser
                     :output-dir "target/"
-                    :asset-path "./"
-                    :modules {:main {:entries [recollect.main]
-                                     :depends-on #{:lib}}
-                              :lib {:entries [respo.core respo.macros
-                                              respo.comp.inspect]}}
+                    :asset-path "."
+                    :modules {:main {:init-fn recollect.main/main!}}
                     :devtools {:after-load recollect.main/reload!
-                               :preloads [shadow.cljs.devtools.client.hud]
                                :http-root "target"
-                               :http-port 7000
-                               :loader-mode :eval}
+                               :http-port 7000}
                     :release {:output-dir "dist/"
                               :module-hash-names 8
                               :build-options {:manifest-name "assets.edn"}}}
