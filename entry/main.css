@@ -5,4 +5,5 @@ body {
 
 body * {
   box-sizing: border-box;
+  flex-shrink: 0;
 }
