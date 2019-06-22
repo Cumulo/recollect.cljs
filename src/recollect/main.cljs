@@ -10,7 +10,8 @@
             [recollect.diff :refer [diff-twig]]
             [recollect.patch :refer [patch-twig]]
             [recollect.updater :refer [updater]]
-            [recollect.schema :as schema]))
+            [recollect.schema :as schema]
+            [recollect.config :as config]))
 
 (defonce *client-store (atom schema/store))
 
@@ -55,6 +56,7 @@
 (def ssr? (some? (.querySelector js/document "meta.respo-ssr")))
 
 (defn main! []
+  (println "Running mode:" (if config/dev? "dev" "release"))
   (if ssr? (render-app! realize-ssr!))
   (render-app! render!)
   (add-watch *store :changes render-data-twig!)

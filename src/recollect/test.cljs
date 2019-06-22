@@ -5,7 +5,6 @@
             [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]
-            [shadow.test.env :refer [register-test]]
             [recollect.twig :refer [deftwig]]
             [recollect.twig :refer [render-twig]]))
 
