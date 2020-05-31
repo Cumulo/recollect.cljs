@@ -1,35 +1,44 @@
-
-{:source-paths ["src" "polyfill" "cli"]
- :cache-blockers #{cumulo-util.build}
- :dependencies [[mvc-works/hsl          "0.1.2"]
-                [mvc-works/shell-page   "0.1.10"]
-                [respo                  "0.10.12"]
-                [respo/ui               "0.3.13"]
-                [cumulo/util            "0.1.10"]
-                [respo/value            "0.2.5"]
-                [org.clojure/core.incubator "0.1.4"]]
- :repositories {"central" {:url "https://maven.aliyun.com/nexus/content/groups/public/"}
-                "clojars" {:url "https://mirrors.ustc.edu.cn/clojars/"}}
- :open-file-command ["subl" ["%s:%s:%s" :file :line :column]]
- :dev-http {7000 "target/"}
- :builds {:client {:target :browser
-                   :output-dir "target/"
-                   :asset-path "."
-                   :modules {:client {:init-fn recollect.main/main!}}
-                   :devtools {:after-load recollect.main/reload!}
-                   :compiler-options {:infer-externs :auto}
-                   :release {:output-dir "dist/"
-                             :module-hash-names 8
-                             :build-options {:manifest-name "assets.edn"}}}
-          :test {:target :node-script
-                 :output-to "target/test.js"
-                 :main recollect.test/main!
-                 :devtools {:after-load recollect.test/main!}}
-          :page {:target :node-script
-                :output-to "target/page.js"
-                :main recollect.page/main!
-                :devtools {:after-load recollect.page/main!}}
-          :upload {:target :node-script
-                   :output-to "target/upload.js"
-                   :main recollect.upload/main!
-                   :devtools {:after-load recollect.upload/main!}}}}
+{
+  :source-paths ["src" "polyfill" "cli"]
+  :cache-blockers #{cumulo-util.build}
+  :dependencies [
+    [mvc-works/hsl "0.1.2"]
+    [mvc-works/shell-page "0.1.10"]
+    [respo "0.12.1"]
+    [respo/ui "0.3.14"]
+    [cumulo/util "0.1.12"]
+    [respo/value "0.3.0"]
+    [org.clojure/core.incubator "0.1.4"]
+  ]
+  :open-file-command [
+    "subl"
+    ["%s:%s:%s" :file :line :column]
+  ]
+  :dev-http {7000 "target/"}
+  :builds {
+    :client {
+      :target :browser, :output-dir "target/", :asset-path "."
+      :modules {
+        :client {:init-fn recollect.main/main!}
+      }
+      :devtools {:after-load recollect.main/reload!}
+      :compiler-options {:infer-externs :auto}
+      :release {
+        :output-dir "dist/", :module-hash-names 8
+        :build-options {:manifest-name "assets.edn"}
+      }
+    }
+    :test {
+      :target :node-script, :output-to "target/test.js", :main recollect.test/main!
+      :devtools {:after-load recollect.test/main!}
+    }
+    :page {
+      :target :node-script, :output-to "target/page.js", :main recollect.page/main!
+      :devtools {:after-load recollect.page/main!}
+    }
+    :upload {
+      :target :node-script, :output-to "target/upload.js", :main recollect.upload/main!
+      :devtools {:after-load recollect.upload/main!}
+    }
+  }
+}

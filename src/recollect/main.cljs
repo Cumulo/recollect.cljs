@@ -1,7 +1,6 @@
 
 (ns recollect.main
   (:require [respo.core :refer [render! clear-cache! realize-ssr!]]
-            [respo.cursor :refer [mutate]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
             [recollect.twig :refer [render-twig]]
@@ -32,10 +31,8 @@
      :types {:name 1, "name" 2}})))
 
 (defn dispatch! [op op-data]
-  (let [new-store (if (= op :states)
-                    (update @*store :states (mutate op-data))
-                    (updater @*store op op-data))]
-    (reset! *store new-store)))
+  (when (and config/dev? (not= op :states)) (println op op-data))
+  (reset! *store (updater @*store op op-data)))
 
 (def mount-target (.querySelector js/document ".app"))
 
