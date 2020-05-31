@@ -1,8 +1,9 @@
 
-(ns recollect.updater )
+(ns recollect.updater (:require [respo.cursor :refer [update-states]]))
 
 (defn updater [store op op-data]
   (case op
+    :states (update-states store op-data)
     :lit-0 (assoc store :lit-0 op-data)
     :lit-1 (assoc-in store [:in-map :lit-1] op-data)
     :map-0 (assoc-in store [:map-0 :y] op-data)
