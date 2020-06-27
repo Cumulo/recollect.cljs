@@ -1,5 +1,8 @@
 {
   :paths ["src" "polyfill"]
+  :deps {
+    cumulo/caches {:mvn/version "0.0.1"}
+  }
   :aliases {
     :release {
       :extra-deps {
