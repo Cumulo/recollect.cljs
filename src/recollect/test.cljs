@@ -5,8 +5,7 @@
             [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
             [recollect.util :refer [vec-add seq-add]]
-            [recollect.twig :refer [deftwig]]
-            [recollect.twig :refer [render-twig]]))
+            [recollect.twig :refer [deftwig]]))
 
 (deftest
  test-diff-funcs
@@ -16,10 +15,9 @@
        fx (fn [] "x")
        a0 (A fx)
        b (B fx)
-       a1 (render-twig b a0)
        options {:key :id}
        changes []]
-   (is (= changes (diff-twig a0 a1 options)))))
+   (is (= changes (diff-twig a0 b options)))))
 
 (deftest
  test-diff-map-by-ids

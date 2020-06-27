@@ -3,14 +3,13 @@
   (:require [respo.core :refer [render! clear-cache! realize-ssr!]]
             [recollect.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [recollect.twig :refer [render-twig]]
-            [recollect.types :refer [conceal-twig]]
             [recollect.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.patch :refer [patch-twig]]
             [recollect.updater :refer [updater]]
             [recollect.schema :as schema]
-            [recollect.config :as config]))
+            [recollect.config :as config]
+            [recollect.twig :refer [clear-twig-caches!]]))
 
 (defonce *client-store (atom schema/store))
 
@@ -40,10 +39,10 @@
   (renderer mount-target (comp-container @*data-twig @*client-store) dispatch!))
 
 (defn render-data-twig! []
-  (let [data-twig (render-twig (twig-container @*store) @*data-twig)
+  (let [data-twig (twig-container @*store)
         options {:key :id}
         changes (diff-twig @*data-twig data-twig options)]
-    (comment println "Data twig:" (conceal-twig data-twig))
+    (comment println "Data twig:" data-twig)
     (println "Changes:" changes)
     (reset! *data-twig data-twig)
     (let [new-client (patch-twig @*client-store changes)]
@@ -61,4 +60,8 @@
   (render-data-twig!)
   (println "app started!"))
 
-(defn reload! [] (clear-cache!) (render-data-twig!) (println "code update."))
+(defn reload! []
+  (clear-cache!)
+  (clear-twig-caches!)
+  (render-data-twig!)
+  (println "code update."))
