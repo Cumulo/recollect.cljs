@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-clojars
 
       - name: run tests
-        run: 'yarn test'
+        run: 'yarn && yarn test'
 
       - run: echo Working on ${{ github.ref }}
 
