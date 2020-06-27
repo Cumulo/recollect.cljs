@@ -1,7 +1,6 @@
 
 (ns recollect.diff
   (:require [recollect.util :refer [literal? =seq compare-more]]
-            [recollect.types :refer [twig? conceal-twig]]
             [clojure.set :refer [difference]]
             [recollect.schema :as schema]))
 
@@ -20,13 +19,12 @@
 (defn find-seq-changes [collect! coord ra rb options]
   (cond
     (and (empty? ra) (empty? rb)) nil
-    (empty? ra) (collect! [schema/tree-op-seq-splice coord [0 (conceal-twig (reverse rb))]])
+    (empty? ra) (collect! [schema/tree-op-seq-splice coord [0 (reverse rb)]])
     (empty? rb) (collect! [schema/tree-op-seq-splice coord [(count ra) []]])
     :else
       (if (identical? (first ra) (first rb))
         (recur collect! coord (rest ra) (rest rb) options)
-        (collect!
-         [schema/tree-op-seq-splice coord [(count ra) (conceal-twig (reverse rb))]]))))
+        (collect! [schema/tree-op-seq-splice coord [(count ra) (reverse rb)]]))))
 
 (defn diff-seq [collect! coord a b options]
   (find-seq-changes collect! coord (reverse a) (reverse b) options))
@@ -42,7 +40,7 @@
   (cond
     (and (empty? a-pairs) (empty? b-pairs)) nil
     (empty? b-pairs) (collect! [schema/tree-op-vec-drop coord idx])
-    (empty? a-pairs) (collect! [schema/tree-op-vec-append coord (conceal-twig b-pairs)])
+    (empty? a-pairs) (collect! [schema/tree-op-vec-append coord b-pairs])
     :else
       (do
        (diff-twig collect! (conj coord idx) (first a-pairs) (first b-pairs) options)
@@ -54,7 +52,7 @@
       (and (empty? a-pairs) (empty? b-pairs)) nil
       (empty? a-pairs)
         (do
-         (collect! [schema/tree-op-assoc (conj coord kb) (conceal-twig vb)])
+         (collect! [schema/tree-op-assoc (conj coord kb) vb])
          (recur collect! coord [] (rest b-pairs) options))
       (empty? b-pairs)
         (do
@@ -66,7 +64,7 @@
          (recur collect! coord (rest a-pairs) b-pairs options))
       (= 1 (compare-more ka kb))
         (do
-         (collect! [schema/tree-op-assoc (conj coord kb) (conceal-twig vb)])
+         (collect! [schema/tree-op-assoc (conj coord kb) vb])
          (recur collect! coord a-pairs (rest b-pairs) options))
       :else
         (do
@@ -84,8 +82,6 @@
   ([collect! coord a b options]
    (if (= (type a) (type b))
      (cond
-       (twig? a)
-         (if (not (identical? a b)) (recur collect! coord (:data a) (:data b) options))
        (keyword? b) (if (not= a b) (collect! [schema/tree-op-assoc coord b]))
        (literal? b) (if (not (identical? a b)) (collect! [schema/tree-op-assoc coord b]))
        (map? b) (diff-map collect! coord a b options)
@@ -93,10 +89,10 @@
        (vector? b) (diff-vector collect! coord a b options)
        (seq? b) (diff-seq collect! coord a b options)
        :else (do (println "Unexpected data:" a b)))
-     (collect! [schema/tree-op-assoc coord (conceal-twig b)]))))
+     (collect! [schema/tree-op-assoc coord b]))))
 
 (defn diff-map [collect! coord a b options]
   (let [a-pairs (sort by-key a), b-pairs (sort by-key b), k (:key options)]
     (if (not= (get a k) (get b k))
-      (collect! [schema/tree-op-assoc coord (conceal-twig b)])
+      (collect! [schema/tree-op-assoc coord b])
       (find-map-changes collect! coord a-pairs b-pairs options))))

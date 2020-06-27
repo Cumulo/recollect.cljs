@@ -12,8 +12,6 @@ Cached rendering and diff/patch library designed for Cumulo project.
 
 ```clojure
 (recollect.twig/deftwig twig-name [param] body)
-(recollect.twig/render-twig twig-data old-data-twig)
-(recollect.twig/conceal data-twig)
 (recollect.diff/diff-twig a b {:key :id})
 (recollect.diff/patch-twig a changes)
 ```
