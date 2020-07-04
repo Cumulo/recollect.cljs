@@ -1,5 +1,5 @@
 
-(ns recollect.upload
+(ns recollect.app.upload
   (:require ["child_process" :as cp]
             [recollect.config :as config]
             [cumulo-util.file :refer [sh!]])

@@ -1,14 +1,14 @@
 
-(ns recollect.main
+(ns recollect.app.main
   (:require [respo.core :refer [render! clear-cache! realize-ssr!]]
-            [recollect.comp.container :refer [comp-container]]
+            [recollect.app.comp.container :refer [comp-container]]
             [cljs.reader :refer [read-string]]
-            [recollect.twig.container :refer [twig-container]]
+            [recollect.app.twig.container :refer [twig-container]]
             [recollect.diff :refer [diff-twig]]
             [recollect.patch :refer [patch-twig]]
-            [recollect.updater :refer [updater]]
+            [recollect.app.updater :refer [updater]]
             [recollect.schema :as schema]
-            [recollect.config :as config]
+            [recollect.app.config :as config]
             [recollect.twig :refer [clear-twig-caches!]]))
 
 (defonce *client-store (atom schema/store))

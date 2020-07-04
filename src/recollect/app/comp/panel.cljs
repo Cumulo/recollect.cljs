@@ -1,5 +1,5 @@
 
-(ns recollect.comp.panel
+(ns recollect.app.comp.panel
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo.core :refer [defcomp <> span div]]

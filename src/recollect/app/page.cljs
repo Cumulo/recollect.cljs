@@ -1,11 +1,11 @@
 
-(ns recollect.page
+(ns recollect.app.page
   (:require [respo.render.html :refer [make-string]]
             [shell-page.core :refer [make-page spit slurp]]
-            [recollect.comp.container :refer [comp-container]]
+            [recollect.app.comp.container :refer [comp-container]]
             [recollect.schema :as schema]
             [cljs.reader :refer [read-string]]
-            [recollect.config :as config]
+            [recollect.app.config :as config]
             [cumulo-util.build :refer [get-ip!]])
   (:require-macros [clojure.core.strint :refer [<<]]))
 
@@ -18,7 +18,7 @@
    (merge
     base-info
     {:styles [(<< "http://~(get-ip!):8100/main.css") "/entry/main.css"],
-     :scripts [{:src "/client.js", :defer? true}],
+     :scripts [{:src "/client.js", :type :script, :defer? true}],
      :inline-styles []})))
 
 (defn prod-page []
@@ -31,7 +31,11 @@
      (merge
       base-info
       {:styles [(:release-ui config/site)],
-       :scripts (map (fn [x] {:src (-> x :output-name prefix-cdn), :defer? true}) assets),
+       :scripts (->> assets
+                     (map
+                      (fn [x]
+                        {:type :script, :src (-> x :output-name prefix-cdn), :defer? true}))
+                     vec),
        :ssr "respo-ssr",
        :inline-styles [(slurp "./entry/main.css")]}))))
 

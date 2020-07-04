@@ -1,10 +1,10 @@
 
-(ns recollect.comp.container
+(ns recollect.app.comp.container
   (:require [hsl.core :refer [hsl]]
             [respo-ui.core :as ui]
             [respo.core :refer [defcomp >> <> span div]]
             [respo.comp.space :refer [=<]]
-            [recollect.comp.panel :refer [comp-panel]]
+            [recollect.app.comp.panel :refer [comp-panel]]
             [respo-value.comp.value :refer [comp-value]]))
 
 (defcomp
