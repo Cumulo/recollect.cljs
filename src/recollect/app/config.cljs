@@ -1,5 +1,5 @@
 
-(ns recollect.config )
+(ns recollect.app.config )
 
 (def cdn?
   (cond

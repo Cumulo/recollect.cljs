@@ -1,5 +1,5 @@
 
-(ns recollect.updater (:require [respo.cursor :refer [update-states]]))
+(ns recollect.app.updater (:require [respo.cursor :refer [update-states]]))
 
 (defn updater [store op op-data]
   (case op
