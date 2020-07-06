@@ -2463,6 +2463,7 @@
                             :data $ {}
                               |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250857230) (:text |caches/access-cache) (:id |9oGd_yDq4F)
                               |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250857755) (:text |xs) (:id |8uvRH3yYtM)
+                              |b $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965810507) (:text |*twig-caches) (:id |3LNkATBtSN)
                             :id |CHpD4Wcj_
                         :id |09S46kWPwr
                     :id |SAuh0X1H1N
@@ -2496,6 +2497,7 @@
                               |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250882922) (:text |caches/write-cache!) (:id |x_vNRTD5Uleaf)
                               |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250885255) (:text |xs) (:id |bfJMkNvD6)
                               |r $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250888637) (:text |result) (:id |ceoNcmbXW)
+                              |b $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965824796) (:text |*twig-caches) (:id |gF6czmUmrs)
                             :id |x_vNRTD5U
                           |v $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593250890538) (:text |result) (:id |b8qy4k2-As)
                         :id |Ef1TVvhEtp
@@ -2510,6 +2512,7 @@
               |v $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593252596729)
                 :data $ {}
                   |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593252605045) (:text |caches/reset-caches!) (:id |WY3twp8pUZleaf)
+                  |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965832515) (:text |*twig-caches) (:id |-Rcqg5usQ)
                 :id |WY3twp8pUZ
             :id |16IoXLAo1o
           |new-twig-loop! $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593253142551)
@@ -2520,8 +2523,33 @@
               |v $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593253153364)
                 :data $ {}
                   |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593253157174) (:text |caches/new-loop!) (:id |p7Vepox3I9)
+                  |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965835858) (:text |*twig-caches) (:id |YEeYVsaH3u)
                 :id |_7at-XTN_
             :id |WWrUKPPmr6
+          |*twig-caches $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965811733)
+            :data $ {}
+              |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965814009) (:text |defonce) (:id |G_tWv07Xdd)
+              |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965811733) (:text |*twig-caches) (:id |n0zcWyTivY)
+              |r $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965811733)
+                :data $ {}
+                  |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965820605) (:text |caches/new-caches) (:id |e-BzPJANb6)
+                  |j $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965845075)
+                    :data $ {}
+                      |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965845458) (:text |{}) (:id |wUQmS4EsIP)
+                    :id |R9rANgcgU
+                :id |ZHh8teaNtO
+            :id |ilkArrO1YA
+          |show-tag-summay $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965917428)
+            :data $ {}
+              |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965917428) (:text |defn) (:id |gCEHRo5wA4)
+              |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965990334) (:text |show-twig-summay) (:id |kLSZ8gCLGT)
+              |r $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965917428)
+                :data $ {}
+                  |T $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965926982) (:text |caches/show-summary!) (:id |lBgFvdHRix)
+                  |j $ {} (:type :leaf) (:by |SygU7c6BlG) (:at 1593965930458) (:text |*twig-caches) (:id |0iVMhqCwxS)
+                :id |7g4r7jdLK6
+              |n $ {} (:type :expr) (:by |SygU7c6BlG) (:at 1593965936237) (:data $ {}) (:id |Jz5qvG454)
+            :id |KuPJrf06Mf
         :proc $ {} (:type :expr) (:by nil) (:at 1500476982536) (:data $ {})
       |recollect.app.twig.card $ {}
         :ns $ {} (:type :expr) (:id |HJgbexq6yz) (:by |root) (:at 1511002088963)
