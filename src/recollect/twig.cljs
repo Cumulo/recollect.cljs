@@ -1,16 +1,18 @@
 
-(ns recollect.twig (:require [caches.core :as caches]) (:require-macros [recollect.twig]))
+(ns recollect.twig (:require [memof.core :as memof]) (:require-macros [recollect.twig]))
 
-(defonce *twig-caches (caches/new-caches {}))
+(defonce *twig-caches (atom (memof/new-states {})))
 
 (defn call-twig-func [f params]
-  (let [xs (concat [f] params), v (caches/access-cache *twig-caches xs)]
+  (let [v (memof/access-record *twig-caches f params)]
     (if (some? v)
       v
-      (let [result (apply f params)] (caches/write-cache! *twig-caches xs result) result))))
+      (let [result (apply f params)]
+        (memof/write-record! *twig-caches f params result)
+        result))))
 
-(defn clear-twig-caches! [] (caches/reset-caches! *twig-caches))
+(defn clear-twig-caches! [] (memof/reset-entries! *twig-caches))
 
-(defn new-twig-loop! [] (caches/new-loop! *twig-caches))
+(defn new-twig-loop! [] (memof/new-loop! *twig-caches))
 
-(defn show-twig-summay [] (caches/show-summary! *twig-caches))
+(defn show-twig-summay [] (memof/show-summary @*twig-caches))
