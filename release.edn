@@ -1,6 +1,7 @@
-{:version "0.6.1-a3"
- :group-id "cumulo"
- :artifact-id "recollect"
- :skip-tag true
- :description "Cached rendering and diff/patch library designed for Cumulo project."
+{:version "0.6.1",
+ :group-id "cumulo",
+ :artifact-id "recollect",
+ :skip-tag true,
+ :description "Cached rendering and diff/patch library designed for Cumulo project.",
  :scm-url "https://github.com/Cumulo/recollect"}
+

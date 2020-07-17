@@ -1,6 +1,6 @@
 {
   "name": "recollect",
-  "version": "0.1.0",
+  "version": "0.6.1",
   "description": "Recollect data renderer",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,6 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.12.3",
-    "shadow-cljs": "^2.10.14"
+    "shadow-cljs": "^2.10.15"
   }
 }
