@@ -1,4 +1,4 @@
-{:version "0.6.2",
+{:version "0.6.3-a1",
  :group-id "cumulo",
  :artifact-id "recollect",
  :skip-tag true,
