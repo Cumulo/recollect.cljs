@@ -1,6 +1,6 @@
 {
   "name": "recollect",
-  "version": "0.6.3-a1",
+  "version": "0.6.3",
   "description": "Recollect data renderer",
   "main": "index.js",
   "scripts": {
