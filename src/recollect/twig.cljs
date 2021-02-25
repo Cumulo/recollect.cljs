@@ -1,18 +1,12 @@
 
-(ns recollect.twig (:require [memof.core :as memof]) (:require-macros [recollect.twig]))
+(ns recollect.twig
+  (:require [memof.core :as memof]
+            [memof.alias
+             :refer
+             [*memof-call-states reset-calling-caches! tick-calling-loop!]]))
 
-(defonce *twig-caches (atom (memof/new-states {})))
+(defn clear-twig-caches! [] (reset-calling-caches!))
 
-(defn call-twig-func [f params]
-  (let [v (memof/access-record *twig-caches f params)]
-    (if (some? v)
-      v
-      (let [result (apply f params)]
-        (memof/write-record! *twig-caches f params result)
-        result))))
+(defn new-twig-loop! [] (tick-calling-loop!))
 
-(defn clear-twig-caches! [] (memof/reset-entries! *twig-caches))
-
-(defn new-twig-loop! [] (memof/new-loop! *twig-caches))
-
-(defn show-twig-summay [] (memof/show-summary @*twig-caches))
+(defn show-twig-summay [] (memof/show-summary @*memof-call-states))

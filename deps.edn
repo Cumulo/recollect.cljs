@@ -1,5 +1,5 @@
 {
-  :paths ["src" "polyfill"]
+  :paths ["src"]
   :deps {
     cumulo/memof {:mvn/version "0.2.3"}
   }
