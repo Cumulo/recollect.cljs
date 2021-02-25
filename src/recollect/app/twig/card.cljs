@@ -1,4 +1,4 @@
 
-(ns recollect.app.twig.card (:require [recollect.twig :refer [deftwig]]))
+(ns recollect.app.twig.card (:require ))
 
-(deftwig twig-card (user date) {:user user, :date date})
+(defn twig-card [user date] {:user user, :date date})

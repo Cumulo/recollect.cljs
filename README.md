@@ -7,11 +7,10 @@ Cached rendering and diff/patch library designed for Cumulo project.
 ### API [![Clojars Project](https://img.shields.io/clojars/v/cumulo/recollect.svg)](https://clojars.org/cumulo/recollect)
 
 ```clojure
-[cumulo/recollect "0.6.2"]
+[cumulo/recollect "0.6.4"]
 ```
 
 ```clojure
-(recollect.twig/deftwig twig-name [param] body)
 (recollect.twig/clear-twig-caches!)
 (recollect.twig/new-twig-loop!)
 (recollect.diff/diff-twig a b {:key :id})

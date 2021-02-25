@@ -4,14 +4,13 @@
             [recollect.diff :refer [diff-twig]]
             [recollect.patch :refer [patch-twig]]
             [recollect.schema :as schema]
-            [recollect.util :refer [vec-add seq-add]]
-            [recollect.twig :refer [deftwig]]))
+            [recollect.util :refer [vec-add seq-add]]))
 
 (deftest
  test-diff-funcs
  ()
- (let [A (deftwig twig-a0 (f) (f))
-       B (deftwig twig-b0 (f) (f))
+ (let [A (defn twig-a0 [f] (f))
+       B (defn twig-b0 [f] (f))
        fx (fn [] "x")
        a0 (A fx)
        b (B fx)
